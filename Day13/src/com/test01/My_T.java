@@ -12,7 +12,7 @@ public class My_T {
 		System.out.println(e2);
 		
 		//갑자기 데이터 타입이 변경이 되거나 확장이 되었을때
-		Emp e3 = new Emp("7904",9001);	
+		Emp e3 = new Emp("7905",9001);	// 7904 -> 7905
 		System.out.println(e3);
 		e3.setEname("abcde");
 		System.out.println(e3);
