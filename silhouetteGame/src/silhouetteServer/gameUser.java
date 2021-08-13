@@ -7,7 +7,7 @@ import java.util.*;
 public class gameUser extends Thread {
 
 
-  gameSever server;
+  gameServer server;
   Socket socket; // Client Socket
   Vector<gameUser> auser;
 
@@ -28,7 +28,7 @@ public class gameUser extends Thread {
   // final String
 
 
-  public gameUser(Socket soc, Server sev) {
+  public gameUser(Socket soc, gameServer sev) {
     this.socket = soc;
     this.server = sev;
 
@@ -40,9 +40,14 @@ public class gameUser extends Thread {
   public void run() {
     System.out.println("서버에 입장합니다!" + this.socket.toString());
 
-    os = this.socket.getOutputStream();
-    dos = new DataOutputStream(os);
-    is = this.socket.getInputStream();
-    dis = new DataInputStream(is);
+    try {
+		os = this.socket.getOutputStream();
+		dos = new DataOutputStream(os);
+	    is = this.socket.getInputStream();
+	    dis = new DataInputStream(is);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 }
