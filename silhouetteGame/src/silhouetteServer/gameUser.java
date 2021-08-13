@@ -11,9 +11,7 @@ public class gameUser extends Thread {
   Socket socket; // Client Socket
   Vector<gameUser> auser;
 
-  /**
-   * gameRoom class가 추가돼야 작동됩니다. Vector<gameRoom> room;
-   */
+  Vector<gameRoom> room;
 
   OutputStream os;
   DataOutputStream dos;
@@ -23,9 +21,7 @@ public class gameUser extends Thread {
   String msg; // 수신할 메세지
   String name; // gameUser's name
 
-  /**
-   * gameRoom class가 추가돼야 작동합니다. gameRoom nowRoom; // 입장한 방의 Object를 저장
-   */
+  gameRoom nowRoom; // 입장한 방의 Object를 저장
 
 
   // 메세지 구분 태그
