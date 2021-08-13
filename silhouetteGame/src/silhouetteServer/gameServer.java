@@ -7,12 +7,11 @@ import java.net.SocketException;
 import java.util.Vector;
 
 public class gameServer {
-	Vector<gameUser> alluser;
+  ServerSocket ss = null;
+  Vector<gameUser> alluser;
 	Vector<gameRoom> room;
 	
 	public static void main(String[] args) {
-		ServerSocket ss = null;
-		Socket socket = null;
 		
 		gameServer server = new gameServer();
 		
@@ -21,12 +20,12 @@ public class gameServer {
 		
 		try {
 			//서버 연결 준비
-			ss = new ServerSocket(8787);
+		  server.ss = new ServerSocket(8787);
 			System.out.println("클라이언트 대기중..");
 
 			//서버 연결 상시 대기,승인
 			while(true) {
-				socket = ss.accept();
+				Socket socket = server.ss.accept();
 				
 				//접속된 user 객체 생성 후 user 스레드 시작
 				gameUser user = new gameUser(socket,server);
