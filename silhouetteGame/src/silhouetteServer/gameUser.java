@@ -36,18 +36,35 @@ public class gameUser extends Thread {
   }
 
 
+
   @Override
   public void run() {
     System.out.println("서버에 입장합니다!" + this.socket.toString());
 
     try {
-		os = this.socket.getOutputStream();
-		dos = new DataOutputStream(os);
-	    is = this.socket.getInputStream();
-	    dis = new DataInputStream(is);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+      os = this.socket.getOutputStream();
+      dos = new DataOutputStream(os);
+      is = this.socket.getInputStream();
+      dis = new DataInputStream(is);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
+  public static void main(String[] args) {
+    Socket s1 = null;
+    Socket s2 = null;
+    try {
+      s1 = new Socket("127.0.0.1",8787);
+      s2 = new Socket("127.0.0.1",8787);
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    gameServer sev = new gameServer();
+    gameUser g1 = new gameUser(s1,sev);
+    gameUser g2 = new gameUser(s2,sev);
   }
 }
