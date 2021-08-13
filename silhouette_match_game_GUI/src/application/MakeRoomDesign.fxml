@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" 
+prefWidth="438.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="application.LoginController">
+   <children>
+      <Button fx:id="makeRoomBt" layoutX="306.0" layoutY="88.0" mnemonicParsing="false" onAction="#Login" 
+      prefHeight="53.0" prefWidth="118.0" text="방만들기" />
+      
+      <Label fx:id="lblRoomName" layoutX="25.0" layoutY="88.0" prefHeight="15.0" prefWidth="50.0" text="방제목"
+       textAlignment="CENTER" />
+       
+      <Label fx:id="lblRoomPW" layoutX="14.0" layoutY="125.0" prefHeight="15.0" prefWidth="50.0" text="비밀번호" />
+      <TextField fx:id="txtRoomName1" layoutX="75.0" layoutY="84.0" prefHeight="23.0" prefWidth="208.0" />
+      <PasswordField fx:id="RoomPW" layoutX="75.0" layoutY="121.0" prefHeight="23.0" prefWidth="208.0" />
+   </children>
+</Pane>
