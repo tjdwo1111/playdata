@@ -6,11 +6,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="438.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.makeRoomController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="438.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MakeRoomController">
    <children>
-      <Button fx:id="btMakeRoom" layoutX="306.0" layoutY="88.0" mnemonicParsing="false" onAction="#Login" prefHeight="53.0" prefWidth="118.0" text="방만들기" />
-      <Label fx:id="lblRoomName" layoutX="25.0" layoutY="88.0" prefHeight="15.0" prefWidth="50.0" text="방제목" textAlignment="CENTER" />
-      <Label fx:id="lblRoomPW" layoutX="14.0" layoutY="125.0" prefHeight="15.0" prefWidth="50.0" text="비밀번호" />
+      <Button fx:id="btMakeRoom" layoutX="306.0" layoutY="88.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="118.0" text="諛⑸쭔�뱾湲�" />
+      <Label fx:id="lblRoomName" layoutX="25.0" layoutY="88.0" prefHeight="15.0" prefWidth="50.0" text="諛⑹젣紐�" textAlignment="CENTER" />
+      <Label fx:id="lblRoomPW" layoutX="14.0" layoutY="125.0" prefHeight="15.0" prefWidth="50.0" text="鍮꾨�踰덊샇" />
       <TextField fx:id="txtRoomName" layoutX="75.0" layoutY="84.0" prefHeight="23.0" prefWidth="208.0" />
       <PasswordField fx:id="txtRoomPW" layoutX="75.0" layoutY="121.0" prefHeight="23.0" prefWidth="208.0" />
    </children>
