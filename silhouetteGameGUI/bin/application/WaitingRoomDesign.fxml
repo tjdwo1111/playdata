@@ -5,11 +5,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WaitingRoomController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+ fx:controller="application.WaitingRoomController">
    <children>
-      <Button fx:id="btExit" layoutX="429.0" layoutY="326.0" mnemonicParsing="false" prefHeight="46.0" onAction="#close" prefWidth="145.0" text="나가기" />
-      <ImageView fitHeight="199.0" fitWidth="388.0" layoutX="12.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="btMakeRoom" layoutX="429.0" layoutY="263.0" mnemonicParsing="false" prefHeight="46.0" onAction="#makeRoom" prefWidth="145.0" text="방만들기" />
-      <ListView fx:id="lvRoomList" layoutX="25.0" layoutY="28.0" prefHeight="345.0" prefWidth="388.0" />
+      <Button fx:id="makeRoom" layoutX="429.0" layoutY="263.0" mnemonicParsing="false" prefHeight="46.0" 
+      onAction="#makeRoom" prefWidth="145.0" text="방만들기1" />
+      
+      <Button fx:id="exit" layoutX="429.0" layoutY="326.0" mnemonicParsing="false" prefHeight="46.0" onAction="#close" 
+      prefWidth="145.0" text="나가기" />
+      
+      <ImageView fitHeight="199.0" fitWidth="388.0" layoutX="12.0" layoutY="26.0" pickOnBounds="true" 
+      preserveRatio="true" />
+      
+      <ListView fx:id="roomList" layoutX="25.0" layoutY="28.0" prefHeight="345.0" prefWidth="388.0" />
    </children>
 </Pane>

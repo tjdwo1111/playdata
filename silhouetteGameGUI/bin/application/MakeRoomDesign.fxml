@@ -6,12 +6,22 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="438.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.makeRoomController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="438.0"
+ xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WaitGameRoomMainController">
    <children>
-      <Button fx:id="btMakeRoom" layoutX="306.0" layoutY="88.0" mnemonicParsing="false" onAction="#Login" prefHeight="53.0" prefWidth="118.0" text="방만들기" />
-      <Label fx:id="lblRoomName" layoutX="25.0" layoutY="88.0" prefHeight="15.0" prefWidth="50.0" text="방제목" textAlignment="CENTER" />
-      <Label fx:id="lblRoomPW" layoutX="14.0" layoutY="125.0" prefHeight="15.0" prefWidth="50.0" text="비밀번호" />
-      <TextField fx:id="txtRoomName" layoutX="75.0" layoutY="84.0" prefHeight="23.0" prefWidth="208.0" />
-      <PasswordField fx:id="txtRoomPW" layoutX="75.0" layoutY="121.0" prefHeight="23.0" prefWidth="208.0" />
+      <Button fx:id="makeRoomBt" layoutX="306.0" layoutY="62.0" mnemonicParsing="false" onAction="#makeRoom" prefHeight="53.0" 
+      prefWidth="118.0" text="방만들기2" />
+      
+      <Button fx:id="back" layoutX="306.0" layoutY="124.0" mnemonicParsing="false" onAction="#back" prefHeight="53.0"
+       prefWidth="118.0" text="이전으로" />
+       
+      <Label fx:id="lblRoomName" layoutX="154.0" layoutY="43.0" prefHeight="15.0" prefWidth="50.0" text="방제목" textAlignment="CENTER" />
+       
+      <Label fx:id="lblRoomPW" layoutX="148.0" layoutY="115.0" prefHeight="19.0" prefWidth="62.0" text="비밀번호" />
+      
+      <TextField fx:id="txtRoomName1" layoutX="75.0" layoutY="74.0" prefHeight="23.0" prefWidth="208.0" />
+      
+      <PasswordField fx:id="RoomPW" layoutX="75.0" layoutY="136.0" prefHeight="23.0" prefWidth="208.0" />
+      
    </children>
 </Pane>

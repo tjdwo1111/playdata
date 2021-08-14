@@ -9,21 +9,28 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.*;
 
-public class WaitingRoomController{
+public class WaitingRoomController {
 	@FXML
-	private Button btExit;
+	private Button exit;
 	@FXML
-	private Button btMakeRoom;
-	@FXML
-	private ListView lvRoomList;
+	private Button makeRoomBt;
 	
-	public void makeRoom() {
+	@FXML
+	private Button makeRoom;
+
+	public void makeRoom() { // 방 만들기
 		Stage primaryStage = new Stage();
-		
+
 		Parent root;
 		
+		Stage stage2 = (Stage) exit.getScene().getWindow();
+		Platform.runLater(() -> {
+				stage2.close();
+		});
+
 		try {
 			root = FXMLLoader.load(getClass().getResource("MakeRoomDesign.fxml"));
+
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.setAlwaysOnTop(true);
@@ -31,15 +38,17 @@ public class WaitingRoomController{
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+
+			
 		}
-		
 	}
-	
+
+
 	public void close() {
-		Stage stage11 = (Stage) btExit.getScene().getWindow();
+		Stage stage11 = (Stage) exit.getScene().getWindow();
 		Platform.runLater(() -> {
 			stage11.close();
 		});
 	}
-	
+
 }

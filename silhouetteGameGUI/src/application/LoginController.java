@@ -17,13 +17,13 @@ import javafx.stage.Stage;
 public class LoginController {
 	
 	@FXML
-	private Button btLogin;
+	private Button login;
 
 	@FXML
-	private Label lblUserName;
+	private Label lbl_userName;
 	
 	@FXML
-	private TextField txtUserName;
+	private TextField txt_userName;
 	
 	@FXML
 	public void Login(ActionEvent event) throws Exception {
@@ -39,7 +39,7 @@ public class LoginController {
 			primaryStage.show();
 			
 			
-			Stage stage11 = (Stage) btLogin.getScene().getWindow();
+			Stage stage11 = (Stage) login.getScene().getWindow();
 			Platform.runLater(() -> {
 			stage11.close();
 				});

@@ -5,10 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" 
+prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="application.LoginController">
    <children>
-      <Button fx:id="btLogin" layoutX="130.0" layoutY="141.0" mnemonicParsing="false" onAction="#Login" text="접속" />
-      <TextField fx:id="txtUserName" layoutX="108.0" layoutY="77.0" />
-      <Label fx:id="lblUserName" layoutX="58.0" layoutY="81.0" text="Name" />
+      <Button fx:id="login" layoutX="130.0" layoutY="141.0" mnemonicParsing="false" onAction="#Login" text="접속" />
+      <TextField fx:id="txt_userName" layoutX="108.0" layoutY="77.0" />
+      <Label fx:id="lbl_userName" layoutX="58.0" layoutY="81.0" text="Name" />
    </children>
 </Pane>
