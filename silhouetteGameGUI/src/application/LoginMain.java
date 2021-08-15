@@ -15,7 +15,7 @@ public class LoginMain extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("LoginDesign.fxml"));
 
 		primaryStage.setScene(new Scene(root));
-		primaryStage.setTitle("실루엣 맞추기");
+		primaryStage.setTitle("실루엣 맞추기 게임");
 		primaryStage.show();
 	}
 

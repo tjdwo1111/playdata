@@ -32,9 +32,9 @@ public class LoginController {
 	@FXML
 	public void Login(ActionEvent event) throws Exception { //접속 버튼을 눌렀을 때의 onAction
 		//TODO: 네트워크 통신 시작 userName과 서버 정보, 포트번호 넘겨주기
-		Stage primaryStage = new Stage();
+		Stage waitingRoomWindow = new Stage();
+		Parent waitingRoomRoot;
 		
-		Parent root;
 		FXMLLoader loader = new FXMLLoader();
 		//소켓 연결
 		Socket s1 = null;
@@ -65,21 +65,21 @@ public class LoginController {
 		try {
 			//loader에 location 설정해주기
 			loader.setLocation(getClass().getResource("WaitingRoomDesign.fxml"));
-			root = (Parent)loader.load();
+			waitingRoomRoot = (Parent)loader.load();
 			
 			//waitingRoom으로 화면 전환 시 user의 정보 넘겨주기
 			WaitingRoomController wrc = loader.getController(); // loader을 통해 WatingRoomController생성
 			wrc.initData(user);
 			
-			Scene scene = new Scene(root);
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			Scene waitingRoomScene = new Scene(waitingRoomRoot);
+			waitingRoomWindow.setScene(waitingRoomScene);
+			waitingRoomWindow.show();
 			
 			//전의 창 닫기
-			Stage stage11 = (Stage) btLogin.getScene().getWindow();
-			Platform.runLater(() -> {
-			stage11.close();
-				});
+			Stage loginWindow = (Stage) btLogin.getScene().getWindow();
+	
+			loginWindow.close();
+		
 	
 		} catch (IOException e) {
 			e.printStackTrace();
