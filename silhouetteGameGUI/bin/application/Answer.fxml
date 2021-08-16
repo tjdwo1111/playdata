@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <AnchorPane prefHeight="244.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameRoomController">
 
    <children>
@@ -15,6 +16,20 @@
       </Button>
       
      <TextField fx:id="txtAnswer" layoutX="46.0" layoutY="74.0" prefHeight="96.0" prefWidth="257.0" promptText="정답 입력" />
+=======
+<AnchorPane prefHeight="244.0" prefWidth="350.0" 
+xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="application.GameRoomController">
+
+   <children>
+      <Button fx:id="btAnswer" layoutX="223.0" layoutY="122.0" mnemonicParsing="false" onAction="#answer" text="확인">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      
+     <TextField fx:id="txtAnswer" layoutX="75.0" layoutY="84.0" prefHeight="23.0" prefWidth="208.0" promptText="정답 입력" />
+>>>>>>> branch 'main' of https://github.com/tjdwo1111/silhouette-match-game
      
    </children>
 </AnchorPane>
