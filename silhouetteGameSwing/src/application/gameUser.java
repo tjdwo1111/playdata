@@ -37,6 +37,7 @@ public class gameUser extends Thread {
   final String rexitTag = "REXIT"; // 방 퇴장
   final String gameStart = "START"; // 게임시작
   final String gameEnd = "END"; // 게임종료
+  final String gameSkip = "SKIP"; // 게임 스킵
 
 
 

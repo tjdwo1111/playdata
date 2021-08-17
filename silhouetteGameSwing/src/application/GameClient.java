@@ -17,6 +17,7 @@ public class GameClient {
   /* 화면들을 관리할 필드 */
   LoginFrame lf = null;
   WaitRoomFrame wrf = null;
+  GameRoomFrame grf = null;
 
 
 
@@ -33,6 +34,7 @@ public class GameClient {
       // 화면 컨트롤러 객체들을 생성
       client.lf = new LoginFrame(client);
       client.wrf = new WaitRoomFrame(client);
+      client.grf = new GameRoomFrame(client);
 
       // client.wc = new WaitingRoomController(client);
 
@@ -110,7 +112,7 @@ class MessageListener extends Thread {
         /* 로그인 */
 
         /* 방 생성 */
-        else if (m[0].equals(eroomTag)) {
+        else if (m[0].equals(croomTag)) {
           createRoom(m[1]);
         }
         /* 방 생성 */
@@ -164,10 +166,10 @@ class MessageListener extends Thread {
   void createRoom(String _m) {
     if (_m.equals("OKAY")) {
       System.out.println("[Client] 게임방 생성이 완료 됐습니다.");
-      // client.grf.setVisible(true);
+      client.grf.setVisible(true);
       client.wrf.setVisible(false);
-      // client.grf.setTitle(client.wrf.roomName); // 생성한 방의 이름으로 들어간방이름설정.
-      // client.grf.host = 게임의호스트
+      client.grf.setTitle(client.wrf.roomName); // 생성한 방의 이름으로 들어간방이름설정.
+      client.grf.host = true; // 방을 만든사람이면 Host가 된다.
     }
   }
 
@@ -175,7 +177,6 @@ class MessageListener extends Thread {
   void viewCUser(String _m) {
     if (!_m.equals("")) {
       String[] user = _m.split("@");
-
       client.wrf.cuList.setListData(user);
     }
   }
@@ -184,7 +185,6 @@ class MessageListener extends Thread {
   void roomList(String _m) {
     if (!_m.equals("")) {
       String[] room = _m.split("@");
-
       client.wrf.rList.setListData(room);
     }
   }
@@ -193,19 +193,18 @@ class MessageListener extends Thread {
   void enterRoom(String _m) {
     if (_m.equals("OKAY")) { // 방 입장에 성공 했다면.
       System.out.println("[Client] 게임방 입장 완료.");
-      // client.grf.setVisible(true);
+      client.grf.setVisible(true);
       client.wrf.setVisible(false);
-      // client.grf.setTitle(client.wrf.selRoom); // 선택한 방의 이름으로 들어간 방이름 설정.
-      // client.grf.host = 게임의게스트
+      client.grf.setTitle(client.wrf.selRoom); // 선택한 방의 이름으로 들어간 방이름 설정.
+      client.grf.host = false; // 들어간사람은게스트
     }
   }
 
   /* 방 인원 목록을 출력하는 메소드 */
   void roomUser(String _m) {
     if (!_m.equals("")) {
-      // String[] user = _m.split("@");
-
-      // client.grf.userList.setListData(user);
+      String[] user = _m.split("@");
+      client.grf.userList.setListData(user);
     }
   }
 }
