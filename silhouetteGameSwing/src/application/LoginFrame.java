@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 //로그인 기능을 수행하는 인터페이스.
 public class LoginFrame extends JFrame{
  
-  Music music;
   /*Panel*/
   JPanel basePanel = new JPanel(new BorderLayout());
   JPanel centerPanel = new JPanel(new BorderLayout());
