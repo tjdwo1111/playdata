@@ -7,7 +7,6 @@
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -15,8 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-fx:controller = "application.GameRoomController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameRoomController">
    <children>
       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="27.0">
         <columnConstraints>
@@ -32,13 +30,13 @@ fx:controller = "application.GameRoomController">
          <children>
             <StackPane prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="250.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgQuiz" fitHeight="263.0" fitWidth="447.0" pickOnBounds="true" preserveRatio="true" visible="false">
                   </ImageView>
                </children>
             </StackPane>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="241.0" prefWidth="520.0">
                <children>
-                  <Button fx:id="btSkip" layoutX="486.0" layoutY="228.0" mnemonicParsing="false" text="Skip" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="btSkip" layoutX="486.0" layoutY="228.0" mnemonicParsing="false" onAction="#skip" text="Skip" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Label fx:id="timer" prefHeight="75.0" prefWidth="80.0" text="Label" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
@@ -52,14 +50,17 @@ fx:controller = "application.GameRoomController">
                   <TextArea fx:id="outputMsg" layoutY="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="163.0" prefWidth="552.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <ScrollBar layoutX="534.0" layoutY="12.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="163.0" prefWidth="17.0" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <TextField fx:id="inputMsg" layoutY="174.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="552.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="11.0" />
-                  <Button fx:id="btSend" layoutX="501.0" layoutY="174.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="51.0" text="전송" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  
+                  <Button fx:id="btSend" layoutX="501.0" layoutY="174.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#send" prefHeight="29.0" prefWidth="51.0" text="전송" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="181.0" prefWidth="173.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="btOpenAnswer" layoutX="20.0" layoutY="31.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#openAnswerWindow" prefHeight="60.0" prefWidth="145.0" text="정답" />
-                  <Button fx:id="btGameStart" layoutX="20.0" layoutY="31.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#gameStart" prefHeight="60.0" prefWidth="145.0" text="게임 시작" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
-                  <Button fx:id="btExit" layoutX="20.0" layoutY="117.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#returnToWaitingRoom" prefHeight="39.0" prefWidth="145.0" text="나가기" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
+               		<TextField fx:id="inputAnswer" layoutX="6.0" visible="false" AnchorPane.bottomAnchor="152.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" />
+                  <Button fx:id="btGameStart" layoutX="20.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#gameStart" prefHeight="60.0" prefWidth="145.0" text="게임 시작" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
+                  <Button fx:id="btOpenAnswer" layoutX="20.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#answer" prefHeight="60.0" prefWidth="145.0" text="정답" visible="false" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
+                  <Button fx:id="btExit" layoutX="20.0" layoutY="117.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#returnToWaitingRoom" prefHeight="39.0" prefWidth="145.0" text="나가기" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
+               		<Label fx:id="answerLabel" visible="false" />
                </children>
                <GridPane.margin>
                   <Insets />

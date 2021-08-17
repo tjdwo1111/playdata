@@ -1,6 +1,5 @@
 package application;
 
-
 import java.io.IOException;
 import java.net.*;
 import java.io.*;
@@ -8,6 +7,7 @@ import java.util.*;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,20 +15,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class LoginController {
 	gameUser user;
-	
+
 	@FXML
 	private Button btLogin;
 
 	@FXML
 	private Label lblUserName;
-	
+
 	@FXML
 	private TextField txtUserName;
-	
+
 	@FXML
 	public void Login(ActionEvent event) throws Exception { //접속 버튼을 눌렀을 때의 onAction
 		//TODO: 네트워크 통신 시작 userName과 서버 정보, 포트번호 넘겨주기
@@ -79,15 +81,20 @@ public class LoginController {
 			Stage loginWindow = (Stage) btLogin.getScene().getWindow();
 	
 			loginWindow.close();
-		
-	
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
-	
-}	
-	
-
-
+	  public void login () {
+			txtUserName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		        @Override
+		        public void handle(KeyEvent k) {
+		            if (k.getCode().equals(KeyCode.ENTER)) {
+		            	login();
+		            }
+		        }
+		});
+	  }
+}
