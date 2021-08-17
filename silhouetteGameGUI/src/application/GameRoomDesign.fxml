@@ -32,13 +32,13 @@ fx:controller = "application.GameRoomController">
          <children>
             <StackPane prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="250.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgQuiz" visible="false" fitWidth="250.0" fitHeight="250.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                </children>
             </StackPane>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="241.0" prefWidth="520.0">
                <children>
-                  <Button fx:id="btSkip" layoutX="486.0" layoutY="228.0" mnemonicParsing="false" text="Skip" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="btSkip" visible="false" onAction="#skip" layoutX="486.0" layoutY="228.0" mnemonicParsing="false" text="Skip" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Label fx:id="timer" prefHeight="75.0" prefWidth="80.0" text="Label" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
@@ -57,9 +57,11 @@ fx:controller = "application.GameRoomController">
             </AnchorPane>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="181.0" prefWidth="173.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="btOpenAnswer" layoutX="20.0" layoutY="31.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#openAnswerWindow" prefHeight="60.0" prefWidth="145.0" text="정답" />
+               		<TextField fx:id="inputAnswer" visible="false" layoutX="20.0" layoutY="11.0"></TextField>
+                  <Button visible="false"  fx:id="btOpenAnswer" layoutX="20.0" layoutY="31.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#answer" prefHeight="60.0" prefWidth="145.0" text="정답" />
                   <Button fx:id="btGameStart" layoutX="20.0" layoutY="31.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#gameStart" prefHeight="60.0" prefWidth="145.0" text="게임 시작" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
                   <Button fx:id="btExit" layoutX="20.0" layoutY="117.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#returnToWaitingRoom" prefHeight="39.0" prefWidth="145.0" text="나가기" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="19.0" />
+               		<Label fx:id="answerLabel" visible="false"></Label>
                </children>
                <GridPane.margin>
                   <Insets />
