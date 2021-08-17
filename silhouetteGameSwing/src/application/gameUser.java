@@ -37,6 +37,8 @@ public class gameUser extends Thread {
   final String rexitTag = "REXIT"; // 방 퇴장
   final String gameStart = "START"; // 게임시작
   final String gameEnd = "END"; // 게임종료
+  final String chatTag = "CHAT";
+  final String chatMsgTag ="CHATM";
 
 
 
@@ -157,7 +159,13 @@ public class gameUser extends Thread {
           if (room.size() != 0) { // 생성된 Room의 개수가 0이 아니면 방에 입장한 인원에 방 인원 목록을 전송
             sendRoom(roomUser());
           }
+        
+        /*채팅*/
+        }else if(m[0].equals(chatTag)) {
+        	sendRoom(chatMsg(m[1]));// 메세지를 보낸다
         }
+        /*채팅*/
+        
       }
 
     } catch (IOException e) {
@@ -188,6 +196,13 @@ public class gameUser extends Thread {
   }
   /* 클라이언트가 입장한 방의 인원을 조회 */
 
+  /* 채팅 메세지 내옹 */
+  String chatMsg(String chatMsg) {
+	  String msg = chatMsgTag + "//" + chatMsg;
+	  return msg;
+  }
+  /* 채팅 메세지 내옹 */
+  
   /* 접속한 모든 회원 목록을 조회 */
   String connectedUser() {
     String msg = cuserTag + "//";

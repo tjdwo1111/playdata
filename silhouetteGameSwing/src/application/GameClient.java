@@ -17,6 +17,7 @@ public class GameClient {
   /* 화면들을 관리할 필드 */
   LoginFrame lf = null;
   WaitRoomFrame wrf = null;
+  PlayRoomFrame prf = null;
 
 
 
@@ -33,6 +34,7 @@ public class GameClient {
       // 화면 컨트롤러 객체들을 생성
       client.lf = new LoginFrame(client);
       client.wrf = new WaitRoomFrame(client);
+      client.prf = new PlayRoomFrame(client);
 
       // client.wc = new WaitingRoomController(client);
 
@@ -83,6 +85,8 @@ class MessageListener extends Thread {
   final String cuserTag = "CUSER"; // 접속 유저
   final String rexitTag = "REXIT"; // 방 퇴장
   final String gameStart = "START"; // 게임시작
+  final String ChatTag = "CHAT"; // 채팅 전송
+  final String chatMsgTag ="CHATM"; //채팅메세지내용
   /* 각 메시지를 구분하기 위한 태그 */
 
   MessageListener(GameClient _c, Socket _s) {
@@ -110,7 +114,7 @@ class MessageListener extends Thread {
         /* 로그인 */
 
         /* 방 생성 */
-        else if (m[0].equals(eroomTag)) {
+        else if (m[0].equals(croomTag)) {
           createRoom(m[1]);
         }
         /* 방 생성 */
@@ -143,12 +147,17 @@ class MessageListener extends Thread {
           enterRoom(m[1]);
         }
         /* 방 입장 */
-      }
+        
+        else if(m[0].equals(chatMsgTag)) {
+        	//TODO: 채팅창에 보여주기 
+        }
+    
+      }//while end
 
     } catch (Exception e) {
       System.out.println("[Client] Error : 메시지 받기 오류 > " + e.toString());
     }
-  }
+  }//run end
 
   /* 로그인 성공 여부를 확인하는 메소드 */
   void loginCheck(String _m) {
@@ -166,6 +175,7 @@ class MessageListener extends Thread {
       System.out.println("[Client] 게임방 생성이 완료 됐습니다.");
       // client.grf.setVisible(true);
       client.wrf.setVisible(false);
+      client.prf.setVisible(true);
       // client.grf.setTitle(client.wrf.roomName); // 생성한 방의 이름으로 들어간방이름설정.
       // client.grf.host = 게임의호스트
     }
@@ -208,4 +218,5 @@ class MessageListener extends Thread {
       // client.grf.userList.setListData(user);
     }
   }
+  
 }
