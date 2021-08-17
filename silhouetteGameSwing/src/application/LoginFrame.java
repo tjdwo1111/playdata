@@ -19,7 +19,7 @@ public class LoginFrame extends JFrame {
   /* TextField */
   JTextField nameField = new JTextField();
   /* Button */
-  JButton loginBtn = new JButton("대기실입장");
+  JButton loginBtn = new JButton("게임입장");
   JButton exitBtn = new JButton("종료");
 
   GameClient c = null;
@@ -44,7 +44,7 @@ public class LoginFrame extends JFrame {
     nameField.setPreferredSize(new Dimension(140, 60));
 
     /* Button 크기 작업 */
-    loginBtn.setPreferredSize(new Dimension(75, 63));
+    loginBtn.setPreferredSize(new Dimension(100, 63));
     exitBtn.setPreferredSize(new Dimension(135, 50));
 
     /* Panel 추가 작업 */
@@ -102,7 +102,7 @@ public class LoginFrame extends JFrame {
         System.exit(0);
       }
 
-      else if (b.getText().equals("대기실입장")) {
+      else if (b.getText().equals("게임입장")) {
         if (name.equals("")) { // 이름 미입력시 대기실입장 실패
           JOptionPane.showMessageDialog(null, "이름을 입력하셔야지 입장이 됩니다!!!", "입장 실패!",
               JOptionPane.ERROR_MESSAGE);
