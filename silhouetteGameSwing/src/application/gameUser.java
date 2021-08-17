@@ -3,7 +3,6 @@ package application;
 import java.net.*;
 import java.io.*;
 import java.util.*;
-import javafx.fxml.FXMLLoader;
 
 // 서버에 접속한 유저와의 메세지 송수신을 관리하는 클래스
 // 스레드를 상속받아 연결 요청이 들어왔을 때도 독립적으로 동작할 수 있도록 한다.
@@ -65,8 +64,8 @@ public class gameUser extends Thread {
 
         String[] m = msg.split("//"); // msg를 "//"로 나누어 m[]배열에 차례로 집어넣는다.
         // 수신 받은 문자열들의 첫 번째 배열(m[0])은 모두 태그 문자. 각 기능을 분리한다.
-        
-        /*로그인*/
+
+        /* 로그인 */
         if (m[0].equals(loginTag)) {
           String mm = m[1];
 
@@ -84,42 +83,42 @@ public class gameUser extends Thread {
             }
           }
         }
-        /*로그인*/
-        
-        /*방생성*/
-        else if(m[0].equals(croomTag)) {
+        /* 로그인 */
+
+        /* 방생성 */
+        else if (m[0].equals(croomTag)) {
           myRoom = new gameRoom(); // 새로운 Room 객체 생성 후 myRoom에 초기화
           myRoom.title = m[1]; // 방 제목을 m[1]로 설정.
           myRoom.count++; // 방의 인원수릃 하나 추가
-          
+
           room.add(myRoom); // room 배열에 myRoom을 추가.
-          
+
           myRoom.gUser.add(this); // myRoom의 접속 인원에 클라이언트 추가
           wuser.remove(this); // 대기실 접속 인원에서 클라이언트를 지운다
-          
+
           dos.writeUTF(croomTag + "//OKAY");
           System.out.println("[Server] " + name + " : 방  '" + m[1] + "' 생성");
-          
+
           sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송한다.
           sendRoom(roomUser()); // 방에 입장한 인원에 방 인원 목록을 전송한다.
         }
-        /*방 생성*/
-        
-        /*방입장*/
-        else if(m[0].equals(eroomTag)) {
-          for (int makedRoom = 0; makedRoom< room.size(); makedRoom++) { // 생성된 방의 갯수
+        /* 방 생성 */
+
+        /* 방입장 */
+        else if (m[0].equals(eroomTag)) {
+          for (int makedRoom = 0; makedRoom < room.size(); makedRoom++) { // 생성된 방의 갯수
             gameRoom r = room.get(makedRoom);
-            if(r.title.equals(m[1])){ // 방 제목이 같고.
-              
+            if (r.title.equals(m[1])) { // 방 제목이 같고.
+
               if (r.count < 6) { // 방 인원수가 6명보다 적을 때 입장 성공
                 myRoom = room.get(makedRoom); // myRoom에 두 조건이 맞는 n번째 room을 초기화
-                myRoom.count++;  // 방의 인원수를 하나 추가한다.
+                myRoom.count++; // 방의 인원수를 하나 추가한다.
                 wuser.remove(this); // 대기실 접속 인원에서 클라이언트를 삭제한다.
                 myRoom.gUser.add(this); // myRoom의 접속 인원에 클라이언트를 추가한다.
-                
+
                 sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송
                 sendRoom(roomUser()); // 방에 입장한 인원에 방 인원 목록을 전송.
-                
+
                 dos.writeUTF(eroomTag + "//OKAY");
                 System.out.println("[Server] " + name + " : 방 '" + m[1] + "' 입장");
               } else {
@@ -132,29 +131,29 @@ public class gameUser extends Thread {
             }
           }
         }
-        /*방입장*/
-        
-        /*프로그램 종료*/
-        else if(m[0].equals(pexitTag)) {
+        /* 방입장 */
+
+        /* 프로그램 종료 */
+        else if (m[0].equals(pexitTag)) {
           auser.remove(this); // 전체 접속 인원에서 클라이언트 삭제
           wuser.remove(this); // 대기실 접속 인원에서 클라이언트 삭제
-          
+
           sendWait(connectedUser()); // 대기실 접속 인원에 전체 접속인원을 전송
         }
-        /*프로그램 종료*/
-        
-        /*방 퇴장*/
-        else if(m[0].equals(rexitTag)) {
+        /* 프로그램 종료 */
+
+        /* 방 퇴장 */
+        else if (m[0].equals(rexitTag)) {
           myRoom.gUser.remove(this); // myRoom의 접속 인원에서 클라이언트 삭제
           myRoom.count--; // myRoom의 인원수 하나 삭제
           wuser.add(this); // 대기실 접속 인원에 클라이언트 추가
-          
+
           System.out.println("[Server] " + name + " : 방 '" + myRoom.title + "' 퇴장");
-          
+
           if (myRoom.count == 0) { // myRoom의 인원수가 0이면 myRoom을 room 배열에서 삭제.
             room.remove(myRoom);
           }
-          
+
           if (room.size() != 0) { // 생성된 Room의 개수가 0이 아니면 방에 입장한 인원에 방 인원 목록을 전송
             sendRoom(roomUser());
           }
@@ -166,40 +165,40 @@ public class gameUser extends Thread {
       e.printStackTrace();
     }
   }
-  
-  /*현재 존재하는 방의 목록을 조회*/
+
+  /* 현재 존재하는 방의 목록을 조회 */
   String roomInfo() {
     String msg = vroomTag + "//";
-    
+
     for (int makedRoom = 0; makedRoom < room.size(); makedRoom++) {
       msg = msg + room.get(makedRoom).title + " : " + room.get(makedRoom).count + "@";
     }
     return msg;
   }
-  /*현재 존재하는 방의 목록을 조회*/
-  
-  /*클라이언트가 입장한 방의 인원을 조회*/
+  /* 현재 존재하는 방의 목록을 조회 */
+
+  /* 클라이언트가 입장한 방의 인원을 조회 */
   String roomUser() {
     String msg = uroomTag + "//";
-    
-    for(int i = 0; i < myRoom.gUser.size(); i++) {
+
+    for (int i = 0; i < myRoom.gUser.size(); i++) {
       msg = msg + myRoom.gUser.get(i).name + "@";
     }
     return msg;
   }
-  /*클라이언트가 입장한 방의 인원을 조회*/
-  
-  /*접속한 모든 회원 목록을 조회*/
+  /* 클라이언트가 입장한 방의 인원을 조회 */
+
+  /* 접속한 모든 회원 목록을 조회 */
   String connectedUser() {
     String msg = cuserTag + "//";
-    for(int i = 0; i <auser.size(); i++) {
+    for (int i = 0; i < auser.size(); i++) {
       msg = msg + auser.get(i).name + "@";
     }
     return msg;
   }
-  /*접속한 모든 회원 목록을 조회*/
-  
-  /* 대기실에 있는 모든 회원에게 메시지 전송*/
+  /* 접속한 모든 회원 목록을 조회 */
+
+  /* 대기실에 있는 모든 회원에게 메시지 전송 */
   void sendWait(String m) {
     for (int i = 0; i < wuser.size(); i++) {
       try {
@@ -209,11 +208,11 @@ public class gameUser extends Thread {
       }
     }
   }
-  /* 대기실에 있는 모든 회원에게 메시지 전송*/
-  
-  /*방에 입장한 모든 회원에게 메시지 전송*/
+  /* 대기실에 있는 모든 회원에게 메시지 전송 */
+
+  /* 방에 입장한 모든 회원에게 메시지 전송 */
   void sendRoom(String m) {
-    for (int i = 0; i <myRoom.gUser.size(); i++) {
+    for (int i = 0; i < myRoom.gUser.size(); i++) {
       try {
         myRoom.gUser.get(i).dos.writeUTF(m);
       } catch (Exception e) {
@@ -221,5 +220,5 @@ public class gameUser extends Thread {
       }
     }
   }
-  /*방에 입장한 모든 회원에게 메시지 전송*/
+  /* 방에 입장한 모든 회원에게 메시지 전송 */
 }
