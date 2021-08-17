@@ -17,7 +17,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.*;
-import sun.applet.Main;
 
 public class GameRoomController implements Initializable {
   @FXML
