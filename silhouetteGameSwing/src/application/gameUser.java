@@ -4,44 +4,44 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-// 서버에 접속한 유저와의 메세지 송수신을 관리하는 클래스
-// 스레드를 상속받아 연결 요청이 들어왔을 때도 독립적으로 동작할 수 있도록 한다.
+// �꽌踰꾩뿉 �젒�냽�븳 �쑀�����쓽 硫붿꽭吏� �넚�닔�떊�쓣 愿�由ы븯�뒗 �겢�옒�뒪
+// �뒪�젅�뱶瑜� �긽�냽諛쏆븘 �뿰寃� �슂泥��씠 �뱾�뼱�솕�쓣 �븣�룄 �룆由쎌쟻�쑝濡� �룞�옉�븷 �닔 �엳�룄濡� �븳�떎.
 public class gameUser extends Thread {
 
   gameServer server;
   Socket socket;
-  Vector<gameUser> auser; // 연결된 모든 클라이언트
-  Vector<gameUser> wuser; // 대기실에 있는 모든 클라이언트
-  Vector<gameRoom> room; // 생성된 모든 Room
+  Vector<gameUser> auser; // �뿰寃곕맂 紐⑤뱺 �겢�씪�씠�뼵�듃
+  Vector<gameUser> wuser; // ��湲곗떎�뿉 �엳�뒗 紐⑤뱺 �겢�씪�씠�뼵�듃
+  Vector<gameRoom> room; // �깮�꽦�맂 紐⑤뱺 Room
 
-  // 메세지 송수신을 위한 필드
+  // 硫붿꽭吏� �넚�닔�떊�쓣 �쐞�븳 �븘�뱶
   OutputStream os;
   DataOutputStream dos;
   InputStream is;
   DataInputStream dis;
 
-  String msg; // 수신 메세지를 저장할 필드.
-  String name; // 클라이언트의 닉네임을 저장할 필드.
+  String msg; // �닔�떊 硫붿꽭吏�瑜� ���옣�븷 �븘�뱶.
+  String name; // �겢�씪�씠�뼵�듃�쓽 �땳�꽕�엫�쓣 ���옣�븷 �븘�뱶.
 
 
-  gameRoom myRoom; // 입장한 방의 객체를 저장할 필드
+  gameRoom myRoom; // �엯�옣�븳 諛⑹쓽 媛앹껜瑜� ���옣�븷 �븘�뱶
 
-  // 메시지를 구분하기 위한 태그
-  final String loginTag = "LOGIN"; // 로그인
-  final String croomTag = "CROOM"; // 방 생성
-  final String vroomTag = "VROOM"; // 방 목록
-  final String uroomTag = "UROOM"; // 방 유저
-  final String eroomTag = "EROOM"; // 방 입장
-  final String cuserTag = "CUSER"; // 접속 유저
-  final String pexitTag = "PEXIT"; // 프로그램 종료
-  final String rexitTag = "REXIT"; // 방 퇴장
-  final String gameStart = "START"; // 게임시작
-  final String gameEnd = "END"; // 게임종료
+  // 硫붿떆吏�瑜� 援щ텇�븯湲� �쐞�븳 �깭洹�
+  final String loginTag = "LOGIN"; // 濡쒓렇�씤
+  final String croomTag = "CROOM"; // 諛� �깮�꽦
+  final String vroomTag = "VROOM"; // 諛� 紐⑸줉
+  final String uroomTag = "UROOM"; // 諛� �쑀��
+  final String eroomTag = "EROOM"; // 諛� �엯�옣
+  final String cuserTag = "CUSER"; // �젒�냽 �쑀��
+  final String pexitTag = "PEXIT"; // �봽濡쒓렇�옩 醫낅즺
+  final String rexitTag = "REXIT"; // 諛� �눜�옣
+  final String gameStart = "START"; // 寃뚯엫�떆�옉
+  final String gameEnd = "END"; // 寃뚯엫醫낅즺
 
   final String chatTag = "CHAT";
   final String chatMsgTag ="CHATM";
 
-  final String gameSkip = "SKIP"; // 게임 스킵
+  final String gameSkip = "SKIP"; // 寃뚯엫 �뒪�궢
 
 
 
@@ -57,7 +57,7 @@ public class gameUser extends Thread {
 
   @Override
   public void run() {
-    System.out.println("[Server] 클라이언트 접속 > " + this.socket.toString());
+    System.out.println("[Server] �겢�씪�씠�뼵�듃 �젒�냽 > " + this.socket.toString());
 
     try {
       os = this.socket.getOutputStream();
@@ -66,17 +66,17 @@ public class gameUser extends Thread {
       dis = new DataInputStream(is);
 
       while (true) {
-        msg = dis.readUTF(); // 메시지 수신을 상시 대기시킨다.
+        msg = dis.readUTF(); // 硫붿떆吏� �닔�떊�쓣 �긽�떆 ��湲곗떆�궓�떎.
 
-        String[] m = msg.split("//"); // msg를 "//"로 나누어 m[]배열에 차례로 집어넣는다.
-        // 수신 받은 문자열들의 첫 번째 배열(m[0])은 모두 태그 문자. 각 기능을 분리한다.
+        String[] m = msg.split("//"); // msg瑜� "//"濡� �굹�늻�뼱 m[]諛곗뿴�뿉 李⑤�濡� 吏묒뼱�꽔�뒗�떎.
+        // �닔�떊 諛쏆� 臾몄옄�뿴�뱾�쓽 泥� 踰덉㎏ 諛곗뿴(m[0])�� 紐⑤몢 �깭洹� 臾몄옄. 媛� 湲곕뒫�쓣 遺꾨━�븳�떎.
 
-        /* 로그인 */
+        /* 濡쒓렇�씤 */
         if (m[0].equals(loginTag)) {
           String mm = m[1];
 
           if (!mm.equals("null")) {
-            name = mm; // 로그인한 사용자의 닉네임을 필드에 저장한다.
+            name = mm; // 濡쒓렇�씤�븳 �궗�슜�옄�쓽 �땳�꽕�엫�쓣 �븘�뱶�뿉 ���옣�븳�떎.
             auser.add(this);
             wuser.add(this);
 
@@ -84,91 +84,93 @@ public class gameUser extends Thread {
 
             sendWait(connectedUser());
 
-            if (room.size() > 0) { // 생성된 방의 갯수가 0이면
-              sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송한다.
+            if (room.size() > 0) { // �깮�꽦�맂 諛⑹쓽 媛��닔媛� 0�씠硫�
+              sendWait(roomInfo()); // ��湲곗떎 �젒�냽 �씤�썝�뿉 諛� 紐⑸줉�쓣 �쟾�넚�븳�떎.
             }
           }
         }
-        /* 로그인 */
+        /* 濡쒓렇�씤 */
 
-        /* 방생성 */
+        /* 諛⑹깮�꽦 */
         else if (m[0].equals(croomTag)) {
-          myRoom = new gameRoom(); // 새로운 Room 객체 생성 후 myRoom에 초기화
-          myRoom.title = m[1]; // 방 제목을 m[1]로 설정.
-          myRoom.count++; // 방의 인원수f 하나 추가
+          myRoom = new gameRoom(); // �깉濡쒖슫 Room 媛앹껜 �깮�꽦 �썑 myRoom�뿉 珥덇린�솕
+          myRoom.title = m[1]; // 諛� �젣紐⑹쓣 m[1]濡� �꽕�젙.
+          myRoom.count++; // 諛⑹쓽 �씤�썝�닔혨f �븯�굹 異붽�
 
-          room.add(myRoom); // room 배열에 myRoom을 추가.
+          room.add(myRoom); // room 諛곗뿴�뿉 myRoom�쓣 異붽�.
 
-          myRoom.gUser.add(this); // myRoom의 접속 인원에 클라이언트 추가
-          wuser.remove(this); // 대기실 접속 인원에서 클라이언트를 지운다
+          myRoom.gUser.add(this); // myRoom�쓽 �젒�냽 �씤�썝�뿉 �겢�씪�씠�뼵�듃 異붽�
+          wuser.remove(this); // ��湲곗떎 �젒�냽 �씤�썝�뿉�꽌 �겢�씪�씠�뼵�듃瑜� 吏��슫�떎
 
           dos.writeUTF(croomTag + "//OKAY");
-          System.out.println("[Server] " + name + " : 방  '" + m[1] + "' 생성");
+          System.out.println("[Server] " + name + " : 諛�  '" + m[1] + "' �깮�꽦");
 
-          sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송한다.
-          sendRoom(roomUser()); // 방에 입장한 인원에 방 인원 목록을 전송한다.
+          sendWait(roomInfo()); // ��湲곗떎 �젒�냽 �씤�썝�뿉 諛� 紐⑸줉�쓣 �쟾�넚�븳�떎.
+          sendRoom(roomUser()); // 諛⑹뿉 �엯�옣�븳 �씤�썝�뿉 諛� �씤�썝 紐⑸줉�쓣 �쟾�넚�븳�떎.
         }
-        /* 방 생성 */
+        /* 諛� �깮�꽦 */
 
-        /* 방입장 */
+        /* 諛⑹엯�옣 */
         else if (m[0].equals(eroomTag)) {
-          for (int makedRoom = 0; makedRoom < room.size(); makedRoom++) { // 생성된 방의 갯수
+          for (int makedRoom = 0; makedRoom < room.size(); makedRoom++) { // �깮�꽦�맂 諛⑹쓽 媛��닔
             gameRoom r = room.get(makedRoom);
-            if (r.title.equals(m[1])) { // 방 제목이 같고.
+            if (r.title.equals(m[1])) { // 諛� �젣紐⑹씠 媛숆퀬.
 
-              if (r.count < 6) { // 방 인원수가 6명보다 적을 때 입장 성공
-                myRoom = room.get(makedRoom); // myRoom에 두 조건이 맞는 n번째 room을 초기화
-                myRoom.count++; // 방의 인원수를 하나 추가한다.
-                wuser.remove(this); // 대기실 접속 인원에서 클라이언트를 삭제한다.
-                myRoom.gUser.add(this); // myRoom의 접속 인원에 클라이언트를 추가한다.
+              if (r.count < 6) { // 諛� �씤�썝�닔媛� 6紐낅낫�떎 �쟻�쓣 �븣 �엯�옣 �꽦怨�
+                myRoom = room.get(makedRoom); // myRoom�뿉 �몢 議곌굔�씠 留욌뒗 n踰덉㎏ room�쓣 珥덇린�솕
+                myRoom.count++; // 諛⑹쓽 �씤�썝�닔瑜� �븯�굹 異붽��븳�떎.
+                wuser.remove(this); // ��湲곗떎 �젒�냽 �씤�썝�뿉�꽌 �겢�씪�씠�뼵�듃瑜� �궘�젣�븳�떎.
+                myRoom.gUser.add(this); // myRoom�쓽 �젒�냽 �씤�썝�뿉 �겢�씪�씠�뼵�듃瑜� 異붽��븳�떎.
 
-                sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송
-                sendRoom(roomUser()); // 방에 입장한 인원에 방 인원 목록을 전송.
+                sendWait(roomInfo()); // ��湲곗떎 �젒�냽 �씤�썝�뿉 諛� 紐⑸줉�쓣 �쟾�넚
+                sendRoom(roomUser()); // 諛⑹뿉 �엯�옣�븳 �씤�썝�뿉 諛� �씤�썝 紐⑸줉�쓣 �쟾�넚.
 
                 dos.writeUTF(eroomTag + "//OKAY");
-                System.out.println("[Server] " + name + " : 방 '" + m[1] + "' 입장");
+                System.out.println("[Server] " + name + " : 諛� '" + m[1] + "' �엯�옣");
               } else {
                 dos.writeUTF(eroomTag + "//FAIL");
-                System.out.println("[Server] 인원 초과 입장 불가능!");
+                System.out.println("[Server] �씤�썝 珥덇낵 �엯�옣 遺덇��뒫!");
               }
-            } else { // 같은 방 제목이 없으니 입장 실패.
+            } else { // 媛숈� 諛� �젣紐⑹씠 �뾾�쑝�땲 �엯�옣 �떎�뙣.
               dos.writeUTF(eroomTag + "//FAIL");
-              System.out.println("[Server] " + name + " : 방 '" + m[1] + "' 입장 오류");
+              System.out.println("[Server] " + name + " : 諛� '" + m[1] + "' �엯�옣 �삤瑜�");
             }
           }
         }
-        /* 방입장 */
+        /* 諛⑹엯�옣 */
 
-        /* 프로그램 종료 */
+        /* �봽濡쒓렇�옩 醫낅즺 */
         else if (m[0].equals(pexitTag)) {
-          auser.remove(this); // 전체 접속 인원에서 클라이언트 삭제
-          wuser.remove(this); // 대기실 접속 인원에서 클라이언트 삭제
+          auser.remove(this); // �쟾泥� �젒�냽 �씤�썝�뿉�꽌 �겢�씪�씠�뼵�듃 �궘�젣
+          wuser.remove(this); // ��湲곗떎 �젒�냽 �씤�썝�뿉�꽌 �겢�씪�씠�뼵�듃 �궘�젣
 
-          sendWait(connectedUser()); // 대기실 접속 인원에 전체 접속인원을 전송
+          sendWait(connectedUser()); // ��湲곗떎 �젒�냽 �씤�썝�뿉 �쟾泥� �젒�냽�씤�썝�쓣 �쟾�넚
         }
-        /* 프로그램 종료 */
+        /* �봽濡쒓렇�옩 醫낅즺 */
 
-        /* 방 퇴장 */
+        /* 諛� �눜�옣 */
         else if (m[0].equals(rexitTag)) {
-          myRoom.gUser.remove(this); // myRoom의 접속 인원에서 클라이언트 삭제
-          myRoom.count--; // myRoom의 인원수 하나 삭제
-          wuser.add(this); // 대기실 접속 인원에 클라이언트 추가
+          myRoom.gUser.remove(this); // myRoom�쓽 �젒�냽 �씤�썝�뿉�꽌 �겢�씪�씠�뼵�듃 �궘�젣
+          myRoom.count--; // myRoom�쓽 �씤�썝�닔 �븯�굹 �궘�젣
+          wuser.add(this); // ��湲곗떎 �젒�냽 �씤�썝�뿉 �겢�씪�씠�뼵�듃 異붽�
 
-          System.out.println("[Server] " + name + " : 방 '" + myRoom.title + "' 퇴장");
+          System.out.println("[Server] " + name + " : 諛� '" + myRoom.title + "' �눜�옣");
 
-          if (myRoom.count == 0) { // myRoom의 인원수가 0이면 myRoom을 room 배열에서 삭제.
+          if (myRoom.count == 0) { // myRoom�쓽 �씤�썝�닔媛� 0�씠硫� myRoom�쓣 room 諛곗뿴�뿉�꽌 �궘�젣.
             room.remove(myRoom);
           }
 
-          if (room.size() != 0) { // 생성된 Room의 개수가 0이 아니면 방에 입장한 인원에 방 인원 목록을 전송
+          if (room.size() != 0) { // �깮�꽦�맂 Room�쓽 媛쒖닔媛� 0�씠 �븘�땲硫� 諛⑹뿉 �엯�옣�븳 �씤�썝�뿉 諛� �씤�썝 紐⑸줉�쓣 �쟾�넚
             sendRoom(roomUser());
           }
         
-        /*채팅*/
+        /*梨꾪똿*/
         }else if(m[0].equals(chatTag)) {
-        	sendRoom(chatMsg(m[1]));// 메세지를 보낸다
+        	System.out.println("[Server] 메세지 내용 " + m[1]);
+        	System.out.println("name찍히니?" + name);
+        	sendRoom(chatMsg(m[1]));
         }
-        /*채팅*/
+        /*梨꾪똿*/
         
       }
 
@@ -178,7 +180,7 @@ public class gameUser extends Thread {
     }
   }
 
-  /* 현재 존재하는 방의 목록을 조회 */
+  /* �쁽�옱 議댁옱�븯�뒗 諛⑹쓽 紐⑸줉�쓣 議고쉶 */
   String roomInfo() {
     String msg = vroomTag + "//";
 
@@ -187,9 +189,9 @@ public class gameUser extends Thread {
     }
     return msg;
   }
-  /* 현재 존재하는 방의 목록을 조회 */
+  /* �쁽�옱 議댁옱�븯�뒗 諛⑹쓽 紐⑸줉�쓣 議고쉶 */
 
-  /* 클라이언트가 입장한 방의 인원을 조회 */
+  /* �겢�씪�씠�뼵�듃媛� �엯�옣�븳 諛⑹쓽 �씤�썝�쓣 議고쉶 */
   String roomUser() {
     String msg = uroomTag + "//";
 
@@ -198,16 +200,16 @@ public class gameUser extends Thread {
     }
     return msg;
   }
-  /* 클라이언트가 입장한 방의 인원을 조회 */
+  /* �겢�씪�씠�뼵�듃媛� �엯�옣�븳 諛⑹쓽 �씤�썝�쓣 議고쉶 */
 
-  /* 채팅 메세지 내옹 */
+  /* 梨꾪똿 硫붿꽭吏� �궡�샊 */
   String chatMsg(String chatMsg) {
-	  String msg = chatMsgTag + "//" + chatMsg;
+	  String msg = chatMsgTag + "//" + name + " : " + chatMsg;
 	  return msg;
   }
-  /* 채팅 메세지 내옹 */
+  /* 梨꾪똿 硫붿꽭吏� �궡�샊 */
   
-  /* 접속한 모든 회원 목록을 조회 */
+  /* �젒�냽�븳 紐⑤뱺 �쉶�썝 紐⑸줉�쓣 議고쉶 */
   String connectedUser() {
     String msg = cuserTag + "//";
     for (int i = 0; i < auser.size(); i++) {
@@ -215,9 +217,9 @@ public class gameUser extends Thread {
     }
     return msg;
   }
-  /* 접속한 모든 회원 목록을 조회 */
+  /* �젒�냽�븳 紐⑤뱺 �쉶�썝 紐⑸줉�쓣 議고쉶 */
 
-  /* 대기실에 있는 모든 회원에게 메시지 전송 */
+  /* ��湲곗떎�뿉 �엳�뒗 紐⑤뱺 �쉶�썝�뿉寃� 硫붿떆吏� �쟾�넚 */
   void sendWait(String m) {
     for (int i = 0; i < wuser.size(); i++) {
       try {
@@ -227,9 +229,9 @@ public class gameUser extends Thread {
       }
     }
   }
-  /* 대기실에 있는 모든 회원에게 메시지 전송 */
+  /* ��湲곗떎�뿉 �엳�뒗 紐⑤뱺 �쉶�썝�뿉寃� 硫붿떆吏� �쟾�넚 */
 
-  /* 방에 입장한 모든 회원에게 메시지 전송 */
+  /* 諛⑹뿉 �엯�옣�븳 紐⑤뱺 �쉶�썝�뿉寃� 硫붿떆吏� �쟾�넚 */
   void sendRoom(String m) {
     for (int i = 0; i < myRoom.gUser.size(); i++) {
       try {
@@ -239,5 +241,5 @@ public class gameUser extends Thread {
       }
     }
   }
-  /* 방에 입장한 모든 회원에게 메시지 전송 */
+  /* 諛⑹뿉 �엯�옣�븳 紐⑤뱺 �쉶�썝�뿉寃� 硫붿떆吏� �쟾�넚 */
 }
