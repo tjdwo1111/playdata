@@ -2,12 +2,6 @@ package application;
 
 import java.net.*;
 import java.io.*;
-import javafx.*;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 
 // 서버와의 연결과 각 인터페이스를 관리하는 클래스
@@ -115,47 +109,47 @@ class MessageListener extends Thread {
         }
         /* 로그인 */
 
-//        /* 방 생성 */
-//        else if (m[0].equals(eroomTag)) {
-//          createRoom(m[1]);
-//        }
-//        /* 방 생성 */
-//
-//        /* 접속 유저 */
-//        else if (m[0].equals(cuserTag)) {
-//          viewCUser(m[1]);
-//        }
-//        /* 접속 유저 */
-//
-//        /* 방 목록 */
-//        else if (m[0].equals(vroomTag)) {
-//          if (m.length > 1) { // 배열 크기가 1보다 클 때
-//            roomList(m[1]);
-//          } else { // 배열 크기가 1보다 작다 == 방이없다
-//            String[] room = {""}; // 방 목록이 비도록 바꾼다.
-//            // client.wc 리스트뷰에 뿌리기..
-//          }
-//        }
-//        /* 방 목록 */
-//
-//        /* 방 인원 */
-//        else if (m[0].equals(uroomTag)) {
-//          roomUser(m[1]);
-//        }
-//        /* 방 인원 */
-//
-//        /* 방 입장 */
-//        else if (m[0].equals(eroomTag)) {
-//          enterRoom(m[1]);
-//        }
-//        /* 방 입장 */
+        /* 방 생성 */
+        else if (m[0].equals(eroomTag)) {
+          createRoom(m[1]);
+        }
+        /* 방 생성 */
+
+        /* 접속 유저 */
+        else if (m[0].equals(cuserTag)) {
+          viewCUser(m[1]);
+        }
+        /* 접속 유저 */
+
+        /* 방 목록 */
+        else if (m[0].equals(vroomTag)) {
+          if (m.length > 1) { // 배열 크기가 1보다 클 때
+            roomList(m[1]);
+          } else { // 배열 크기가 1보다 작다 == 방이없다
+            String[] room = {""}; // 방 목록이 비도록 바꾼다.
+            client.wrf.rList.setListData(room);
+          }
+        }
+        /* 방 목록 */
+
+        /* 방 인원 */
+        else if (m[0].equals(uroomTag)) {
+          roomUser(m[1]);
+        }
+        /* 방 인원 */
+
+        /* 방 입장 */
+        else if (m[0].equals(eroomTag)) {
+          enterRoom(m[1]);
+        }
+        /* 방 입장 */
       }
 
     } catch (Exception e) {
       System.out.println("[Client] Error : 메시지 받기 오류 > " + e.toString());
     }
   }
-  
+
   /* 로그인 성공 여부를 확인하는 메소드 */
   void loginCheck(String _m) {
     if (_m.equals("OKAY")) {
@@ -165,7 +159,53 @@ class MessageListener extends Thread {
     }
   }
 
-  
-    //방 생성 여부를 확인하는 메소드
-   //void createRoom
+
+  /* 방 생성 여부를 확인하는 메소드 */
+  void createRoom(String _m) {
+    if (_m.equals("OKAY")) {
+      System.out.println("[Client] 게임방 생성이 완료 됐습니다.");
+      // client.grf.setVisible(true);
+      client.wrf.setVisible(false);
+      // client.grf.setTitle(client.wrf.roomName); // 생성한 방의 이름으로 들어간방이름설정.
+      // client.grf.host = 게임의호스트
+    }
+  }
+
+  /* 접속 인원을 출력하는 메소드 */
+  void viewCUser(String _m) {
+    if (!_m.equals("")) {
+      String[] user = _m.split("@");
+
+      client.wrf.cuList.setListData(user);
+    }
+  }
+
+  /* 방 목록을 출력하는 메소드 */
+  void roomList(String _m) {
+    if (!_m.equals("")) {
+      String[] room = _m.split("@");
+
+      client.wrf.rList.setListData(room);
+    }
+  }
+
+  /* 방 입장 여부를 확인하는 메소드 */
+  void enterRoom(String _m) {
+    if (_m.equals("OKAY")) { // 방 입장에 성공 했다면.
+      System.out.println("[Client] 게임방 입장 완료.");
+      // client.grf.setVisible(true);
+      client.wrf.setVisible(false);
+      // client.grf.setTitle(client.wrf.selRoom); // 선택한 방의 이름으로 들어간 방이름 설정.
+      // client.grf.host = 게임의게스트
+    }
+  }
+
+  /* 방 인원 목록을 출력하는 메소드 */
+  void roomUser(String _m) {
+    if (!_m.equals("")) {
+      // String[] user = _m.split("@");
+
+      // client.grf.userList.setListData(user);
+    }
+  }
 }
