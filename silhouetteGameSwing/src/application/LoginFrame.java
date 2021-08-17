@@ -1,24 +1,23 @@
 package application;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 
 //·Î±×ÀÎ ±â´ÉÀ» ¼öÇàÇÏ´Â ÀÎÅÍÆäÀÌ½º.
 public class LoginFrame extends JFrame{
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> parent of 4647299 (ì´ë¯¸ì§€ ì¶œë ¥ì‹œ ì¤‘ë³µì œê±°ì¶”ê°€)
   /*Panel*/
   JPanel basePanel = new JPanel(new BorderLayout());
   JPanel centerPanel = new JPanel(new BorderLayout());
   JPanel westPanel = new JPanel();
   JPanel eastPanel = new JPanel();
   JPanel southPanel = new JPanel();
- 
+  
   /* Label */
   JLabel naL = new JLabel("ÀÌ¸§");
   /* TextField */
@@ -79,7 +78,6 @@ public class LoginFrame extends JFrame{
     
     loginBtn.addActionListener(bl);
     exitBtn.addActionListener(bl);
-    
     
 
     /* Key ÀÌº¥Æ® ¸®½º³Ê Ãß°¡ */

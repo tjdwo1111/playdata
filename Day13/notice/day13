@@ -1,0 +1,44 @@
+자바의 자료 관리 클래스들을 살펴 본다.
+
+-com.test : java.io 객체들을 살펴 본다.
+
+-com.test01 : 자바의 T 타입을 선언하고 구현한다.
+
+<참조형 dataType = class>
+
+	<T>		: Type
+	<E>		: Element
+	<K>		: Key
+	<V>		: Value
+	
+ <int> <double> X <String> <Address> <Calc> <Integer> O
+ 
+ ===============================================================
+
+-com.test02 : 순서형(index형 Element)으로 데이터를 관리하는 객체를 생성하고 구현한다.
+
+			C : add(E e)
+			R : iterator() , get(index)
+			U : set(index, E)
+			D : remove(Object o)
+
+-com.test03 : 값(Value)으로 데이터를 관리하는 객체를 생성하고 구현한다.
+
+			C : add(E e)
+			R : iterator()
+			U :	---------------->객체를 이용해서 멤버 메소드를 명시 호출
+			D : remove(Object o)
+
+-com.test04 : 키(Key, value)값으로 데이터를 관리하는 객체를 생성하고 구현한다.
+
+================================================================
+
+ Collection
+ 	- index		:List -> 순서 있는 목록 , 중복데이터 허용, null허용
+ 	- value		:Set -> 순서 없는 목록 , 중복데이터 허용하지 않는다 , null
+ 	- key,value	:Map -> 순서 없는 목록 , key는 중복키 허용하지 않지만,
+ 									 value는 중복 허용한다.
+
+
+
+
