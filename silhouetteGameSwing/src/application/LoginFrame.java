@@ -1,19 +1,25 @@
 package application;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 
 //로그인 기능을 수행하는 인터페이스.
 public class LoginFrame extends JFrame{
-
+ 
+  Music music;
   /*Panel*/
   JPanel basePanel = new JPanel(new BorderLayout());
   JPanel centerPanel = new JPanel(new BorderLayout());
   JPanel westPanel = new JPanel();
   JPanel eastPanel = new JPanel();
   JPanel southPanel = new JPanel();
-  
+ 
   /* Label */
   JLabel naL = new JLabel("이름");
   /* TextField */
@@ -74,6 +80,7 @@ public class LoginFrame extends JFrame{
     
     loginBtn.addActionListener(bl);
     exitBtn.addActionListener(bl);
+    
     
 
     /* Key 이벤트 리스너 추가 */

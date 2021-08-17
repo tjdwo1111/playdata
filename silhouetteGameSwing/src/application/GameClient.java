@@ -24,6 +24,7 @@ public class GameClient {
   LoginFrame lf = null;
   WaitRoomFrame wrf = null;
 
+  
 
 
   public static void main(String[] args) {
@@ -41,7 +42,8 @@ public class GameClient {
       client.wrf = new WaitRoomFrame(client);
 
       // client.wc = new WaitingRoomController(client);
-
+      
+      
       MessageListener msgListener = new MessageListener(client, client.mySocket);
       msgListener.start(); // 스레드 시작
 

@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.*;
-import sun.applet.Main;
 
 public class GameRoomController implements Initializable {
   @FXML
@@ -43,6 +45,8 @@ public class GameRoomController implements Initializable {
   @FXML
   private TextArea outputMsg;
 
+  Set<Integer> set = new HashSet<Integer>();// 이미지 중복제거
+  
   public String answerTemp;
   final int answers = 15;
   int end = 1;
@@ -65,6 +69,7 @@ public class GameRoomController implements Initializable {
     initData(answerTemp);
     // imgQuiz.setImage(loadRandomImages());
     end = 1;
+    set.clear(); //Set추가
   }
 
   public void skip() {
@@ -154,8 +159,17 @@ public class GameRoomController implements Initializable {
   public Image loadRandomImages() {
     int countImages = Images.size();
     int imageNumber = (int) (Math.random() * countImages);
+    
+    while (set.contains(imageNumber)) { //같은이름 중복시 제거
+		
+		imageNumber = (int) (Math.random() * countImages);
+		if(set.size()== countImages)
+			break;
+		}
+		set.add(imageNumber);
+		
     String image = Images.get(imageNumber);
-
+    
     if (image.indexOf("over") != -1) {
       answerTemp = image.substring(image.lastIndexOf("over"), image.lastIndexOf("."));
     }
