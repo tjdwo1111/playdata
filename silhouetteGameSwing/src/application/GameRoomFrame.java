@@ -14,6 +14,7 @@ public class GameRoomFrame extends JFrame {
   JPanel centerPanel = new JPanel();
   JPanel eastPanel = new JPanel();
   JPanel centerImgPanel = new JPanel();
+  JPanel eastChatPanel = new JPanel();
 
 
 
@@ -33,9 +34,9 @@ public class GameRoomFrame extends JFrame {
   JList<String> userList = new JList<String>();
 
   /* TextField + TextArea(채팅구조) */
-  JTextArea output = new JTextArea(7, 20);
+  JTextArea output = new JTextArea();
   JTextField chatField = new JTextField();
-
+  JScrollPane scroll = new JScrollPane(output);
 
   boolean host = false;
   final int answers = 15;
@@ -69,10 +70,13 @@ public class GameRoomFrame extends JFrame {
     startBtn.setPreferredSize(new Dimension(90, 50));
     answerBtn.setPreferredSize(new Dimension(90, 50));
     answerBtn.setVisible(false);
+    skipBtn.setVisible(false);
     skipBtn.setPreferredSize(new Dimension(235, 30));
     exitBtn.setPreferredSize(new Dimension(235, 30));
     sendChatBtn.setPreferredSize(new Dimension(40, 30));
     sendChatBtn.setHorizontalAlignment(JLabel.RIGHT);
+
+
 
     /* TextField 크기 작업 */
     chatField.setPreferredSize(new Dimension(200, 20));
@@ -86,6 +90,9 @@ public class GameRoomFrame extends JFrame {
     eastPanel.setPreferredSize(new Dimension(250, 652));
     eastPanel.setLayout(new FlowLayout());
 
+    eastChatPanel.setPreferredSize(new Dimension(250, 300));
+    eastChatPanel.setLayout(new FlowLayout());
+
     centerPanel.setBackground(new Color(206, 167, 61));
 
 
@@ -97,17 +104,20 @@ public class GameRoomFrame extends JFrame {
 
     output.setEditable(false);
 
+
     eastPanel.add(userListL);
     eastPanel.add(userList);
     eastPanel.add(startBtn);
     eastPanel.add(answerBtn);
     eastPanel.add(skipBtn);
     eastPanel.add(exitBtn);
-    eastPanel.add(output);
-    eastPanel.add(chatField);
-    eastPanel.add(sendChatBtn);
 
-    eastPanel.add(ranAnswer);
+    eastPanel.add(eastChatPanel, new FlowLayout());
+    // eastChatPanel.add(output);
+    eastChatPanel.add(scroll);
+    eastChatPanel.add(chatField);
+    eastChatPanel.add(sendChatBtn);
+    eastChatPanel.add(ranAnswer);
 
 
     /* Button 이벤트 리스너 추가 */

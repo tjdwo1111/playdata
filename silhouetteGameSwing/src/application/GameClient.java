@@ -5,17 +5,17 @@ import javax.swing.ImageIcon;
 import java.io.*;
 
 
-// ¼­¹ö¿ÍÀÇ ¿¬°á°ú °¢ ÀÎÅÍÆäÀÌ½º¸¦ °ü¸®ÇÏ´Â Å¬·¡½º
+// ì„œë²„ì™€ì˜ ì—°ê²°ê³¼ ê° ì¸í„°í˜ì´ìŠ¤ë¥¼ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
 public class GameClient {
 
   Socket mySocket = null;
 
-  /* ¸Ş½ÃÁö ¼Û½ÅÀ» À§ÇÑ ÇÊµå */
+  /* ë©”ì‹œì§€ ì†¡ì‹ ì„ ìœ„í•œ í•„ë“œ */
   OutputStream os = null;
   DataOutputStream dos = null;
-  /* ¸Ş½ÃÁö ¼Û½ÅÀ» À§ÇÑ ÇÊµå */
+  /* ë©”ì‹œì§€ ì†¡ì‹ ì„ ìœ„í•œ í•„ë“œ */
 
-  /* È­¸éµéÀ» °ü¸®ÇÒ ÇÊµå */
+  /* í™”ë©´ë“¤ì„ ê´€ë¦¬í•  í•„ë“œ */
   LoginFrame lf = null;
   WaitRoomFrame wrf = null;
   GameRoomFrame grf = null;
@@ -25,14 +25,14 @@ public class GameClient {
   public static void main(String[] args) {
     GameClient client = new GameClient();
     try {
-      // ¼­¹ö¿¡ ¿¬°á
+      // ì„œë²„ì— ì—°ê²°
       client.mySocket = new Socket("localhost", 8787);
-      System.out.println("[Client] ¼­¹ö ¿¬°á ¼º°ø");
+      System.out.println("[Client] ì„œë²„ ì—°ê²° ì„±ê³µ");
 
       client.os = client.mySocket.getOutputStream();
       client.dos = new DataOutputStream(client.os);
 
-      // È­¸é ÄÁÆ®·Ñ·¯ °´Ã¼µéÀ» »ı¼º
+      // í™”ë©´ ì»¨íŠ¸ë¡¤ëŸ¬ ê°ì²´ë“¤ì„ ìƒì„±
       client.lf = new LoginFrame(client);
       client.wrf = new WaitRoomFrame(client);
       client.grf = new GameRoomFrame(client);
@@ -40,59 +40,59 @@ public class GameClient {
       // client.wc = new WaitingRoomController(client);
 
       MessageListener msgListener = new MessageListener(client, client.mySocket);
-      msgListener.start(); // ½º·¹µå ½ÃÀÛ
+      msgListener.start(); // ìŠ¤ë ˆë“œ ì‹œì‘
 
 
     } catch (SocketException se) {
-      System.out.println("[Clinet ¼­¹ö ¿¬°á ¿À·ù > " + se.toString());
+      System.out.println("[Clinet ì„œë²„ ì—°ê²° ì˜¤ë¥˜ > " + se.toString());
     } catch (IOException ie) {
-      System.out.println("[Client] ÀÔÃâ·Â ¿À·ù > " + ie.toString());
+      System.out.println("[Client] ì…ì¶œë ¥ ì˜¤ë¥˜ > " + ie.toString());
 
     }
 
   }
 
-  /* ¼­¹ö¿¡ ¸Ş½ÃÁö Àü¼Û */
+  /* ì„œë²„ì— ë©”ì‹œì§€ ì „ì†¡ */
   void sendMsg(String _m) {
     try {
       dos.writeUTF(_m);
     } catch (Exception e) {
-      System.out.println("[Client] ¸Ş½ÃÁö Àü¼Û ¿À·ù > " + e.toString());
+      System.out.println("[Client] ë©”ì‹œì§€ ì „ì†¡ ì˜¤ë¥˜ > " + e.toString());
     }
   }
-  /* ¼­¹ö¿¡ ¸Ş½ÃÁö Àü¼Û */
+  /* ì„œë²„ì— ë©”ì‹œì§€ ì „ì†¡ */
 }
 
 
-// ¼­¹ö¿ÍÀÇ ¸Ş¤Ä½ÃÁö ¼Û¼ö½ÅÀ» °ü¸®ÇÏ´Â Å¬·¡½º
-// ½º·¹µå¸¦ »ó¼Ó¹Ş¾Æ °¢ ±â´É°ú µ¶¸³ÀûÀ¸·Î ±â´ÉÇÒ ¼ö ÀÖµµ·Ï ÇÑ´Ù.
+// ì„œë²„ì™€ì˜ ë©”ã…”ì‹œì§€ ì†¡ìˆ˜ì‹ ì„ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
+// ìŠ¤ë ˆë“œë¥¼ ìƒì†ë°›ì•„ ê° ê¸°ëŠ¥ê³¼ ë…ë¦½ì ìœ¼ë¡œ ê¸°ëŠ¥í•  ìˆ˜ ìˆë„ë¡ í•œë‹¤.
 class MessageListener extends Thread {
   Socket socket;
   GameClient client;
 
-  /* ¸Ş½ÃÁö ¼ö½ÅÀ» À§ÇÑ ÇÊµå */
+  /* ë©”ì‹œì§€ ìˆ˜ì‹ ì„ ìœ„í•œ í•„ë“œ */
   InputStream is;
   DataInputStream dis;
-  /* ¸Ş½ÃÁö ¼ö½ÅÀ» À§ÇÑ ÇÊµå */
+  /* ë©”ì‹œì§€ ìˆ˜ì‹ ì„ ìœ„í•œ í•„ë“œ */
 
-  String msg; // ¼ö½Å ¸Ş½ÃÁö¸¦ ÀúÀå
+  String msg; // ìˆ˜ì‹  ë©”ì‹œì§€ë¥¼ ì €ì¥
 
-  /* °¢ ¸Ş½ÃÁö¸¦ ±¸ºĞÇÏ±â À§ÇÑ ÅÂ±× */
-  final String loginTag = "LOGIN"; // ·Î±×ÀÎ
-  final String croomTag = "CROOM"; // ¹æ »ı¼º
-  final String vroomTag = "VROOM"; // ¹æ ¸ñ·Ï
-  final String uroomTag = "UROOM"; // ¹æ À¯Àú
-  final String eroomTag = "EROOM"; // ¹æ ÀÔÀå
-  final String cuserTag = "CUSER"; // Á¢¼Ó À¯Àú
-  final String rexitTag = "REXIT"; // ¹æ ÅğÀå
-  final String gameStart = "START"; // °ÔÀÓ½ÃÀÛ
-  final String gameEnd = "END"; // °ÔÀÓ ³¡
-  final String gameSkip = "SKIP"; // ½ºÅµ
-  final String gameAnswer = "ANSWER"; // Á¤´ä
-  final String chatTag = "CHAT";  // Ã¤ÆÃÀü¼Û
-  final String chatMsgTag ="CHATM"; // ¹ŞÀº ¸Ş½ÃÁö
-  
-  /* °¢ ¸Ş½ÃÁö¸¦ ±¸ºĞÇÏ±â À§ÇÑ ÅÂ±× */
+  /* ê° ë©”ì‹œì§€ë¥¼ êµ¬ë¶„í•˜ê¸° ìœ„í•œ íƒœê·¸ */
+  final String loginTag = "LOGIN"; // ë¡œê·¸ì¸
+  final String croomTag = "CROOM"; // ë°© ìƒì„±
+  final String vroomTag = "VROOM"; // ë°© ëª©ë¡
+  final String uroomTag = "UROOM"; // ë°© ìœ ì €
+  final String eroomTag = "EROOM"; // ë°© ì…ì¥
+  final String cuserTag = "CUSER"; // ì ‘ì† ìœ ì €
+  final String rexitTag = "REXIT"; // ë°© í‡´ì¥
+  final String gameStart = "START"; // ê²Œì„ì‹œì‘
+  final String gameEnd = "END"; // ê²Œì„ ë
+  final String gameSkip = "SKIP"; // ìŠ¤í‚µ
+  final String gameAnswer = "ANSWER"; // ì •ë‹µ
+  final String chatTag = "CHAT"; // ì±„íŒ…ì „ì†¡
+  final String chatMsgTag = "CHATM"; // ë°›ì€ ë©”ì‹œì§€
+
+  /* ê° ë©”ì‹œì§€ë¥¼ êµ¬ë¶„í•˜ê¸° ìœ„í•œ íƒœê·¸ */
 
   MessageListener(GameClient _c, Socket _s) {
     this.client = _c;
@@ -106,129 +106,131 @@ class MessageListener extends Thread {
       dis = new DataInputStream(is);
 
       while (true) {
-        msg = dis.readUTF(); // ¸Ş½ÃÁö ¼ö½ÅÀ» »ó½Ã ´ë±âÇÑ´Ù.
+        msg = dis.readUTF(); // ë©”ì‹œì§€ ìˆ˜ì‹ ì„ ìƒì‹œ ëŒ€ê¸°í•œë‹¤.
 
-        String[] m = msg.split("//"); // msg¸¦ "//"·Î ³ª´©¾î m[] ¹è¿­¿¡ Â÷·Ê·Î Áı¾î³Ö´Â´Ù.
+        String[] m = msg.split("//"); // msgë¥¼ "//"ë¡œ ë‚˜ëˆ„ì–´ m[] ë°°ì—´ì— ì°¨ë¡€ë¡œ ì§‘ì–´ë„£ëŠ”ë‹¤.
 
-        // ¼ö½Å¹ŞÀº ¹®ÀÚ¿­µéÀÇ Ã¹ ¹øÂ° ¹è¿­(m[0])Àº ¸ğµÎ ÅÂ±× ¹®ÀÚ, °¢ ±â´ÉÀ» ºĞ¸®ÇÑ´Ù.
+        // ìˆ˜ì‹ ë°›ì€ ë¬¸ìì—´ë“¤ì˜ ì²« ë²ˆì§¸ ë°°ì—´(m[0])ì€ ëª¨ë‘ íƒœê·¸ ë¬¸ì, ê° ê¸°ëŠ¥ì„ ë¶„ë¦¬í•œë‹¤.
 
-        /* ·Î±×ÀÎ */
+        /* ë¡œê·¸ì¸ */
         if (m[0].equals(loginTag)) {
           loginCheck(m[1]);
         }
-        /* ·Î±×ÀÎ */
+        /* ë¡œê·¸ì¸ */
 
-        /* ¹æ »ı¼º */
+        /* ë°© ìƒì„± */
         else if (m[0].equals(croomTag)) {
           createRoom(m[1]);
         }
-        /* ¹æ »ı¼º */
+        /* ë°© ìƒì„± */
 
-        /* Á¢¼Ó À¯Àú */
+        /* ì ‘ì† ìœ ì € */
         else if (m[0].equals(cuserTag)) {
           viewCUser(m[1]);
         }
-        /* Á¢¼Ó À¯Àú */
+        /* ì ‘ì† ìœ ì € */
 
-        /* ¹æ ¸ñ·Ï */
+        /* ë°© ëª©ë¡ */
         else if (m[0].equals(vroomTag)) {
-          if (m.length > 1) { // ¹è¿­ Å©±â°¡ 1º¸´Ù Å¬ ¶§
+          if (m.length > 1) { // ë°°ì—´ í¬ê¸°ê°€ 1ë³´ë‹¤ í´ ë•Œ
             roomList(m[1]);
-          } else { // ¹è¿­ Å©±â°¡ 1º¸´Ù ÀÛ´Ù == ¹æÀÌ¾ø´Ù
-            String[] room = {""}; // ¹æ ¸ñ·ÏÀÌ ºñµµ·Ï ¹Ù²Û´Ù.
+          } else { // ë°°ì—´ í¬ê¸°ê°€ 1ë³´ë‹¤ ì‘ë‹¤ == ë°©ì´ì—†ë‹¤
+            String[] room = {""}; // ë°© ëª©ë¡ì´ ë¹„ë„ë¡ ë°”ê¾¼ë‹¤.
             client.wrf.rList.setListData(room);
           }
         }
-        /* ¹æ ¸ñ·Ï */
+        /* ë°© ëª©ë¡ */
 
-        /* ¹æ ÀÎ¿ø */
+        /* ë°© ì¸ì› */
         else if (m[0].equals(uroomTag)) {
           roomUser(m[1]);
         }
-        /* ¹æ ÀÎ¿ø */
+        /* ë°© ì¸ì› */
 
-        /* ¹æ ÀÔÀå */
+        /* ë°© ì…ì¥ */
         else if (m[0].equals(eroomTag)) {
           enterRoom(m[1]);
         }
-        /* ¹æ ÀÔÀå */
+        /* ë°© ì…ì¥ */
 
-        /* °ÔÀÓ¹æ ÅğÀå */
+        /* ê²Œì„ë°© í‡´ì¥ */
         else if (m[0].equals(rexitTag)) {
           exitRoom();
         }
-        /* °ÔÀÓ¹æ ÅğÀå */
-        
-        /* Àü´Ş¹ŞÀº Ã¤ÆÃ ³»¿ë */
-        else if(m[0].equals(chatMsgTag)) {
-          System.out.println("[Client] ¼­¹ö¿¡¼­ ¹ŞÀº ´Ù¸¥ USERÀÇ ¸Ş½ÃÁö " + m[1]);
-          client.grf.output.append(m[1]+"\n");
+        /* ê²Œì„ë°© í‡´ì¥ */
+
+        /* ì „ë‹¬ë°›ì€ ì±„íŒ… ë‚´ìš© */
+        else if (m[0].equals(chatMsgTag)) {
+          System.out.println("[Client] ì„œë²„ì—ì„œ ë°›ì€ ë‹¤ë¥¸ USERì˜ ë©”ì‹œì§€ " + m[1]);
+          client.grf.output.append(m[1] + "\n");
         }
-        /* Àü´Ş¹ŞÀº Ã¤ÆÃ ³»¿ë */
-        
-        /* °ÔÀÓ ½ÃÀÛ */
-        else if(m[0].equals(gameStart)) {
-          System.out.println("[Client] °ÔÀÓ ½ÃÀÛ! ÀÌ¹ÌÁö¸¦ ·£´ıÇÏ°Ô º¸¿©Áİ´Ï´Ù");
+        /* ì „ë‹¬ë°›ì€ ì±„íŒ… ë‚´ìš© */
+
+        /* ê²Œì„ ì‹œì‘ */
+        else if (m[0].equals(gameStart)) {
+          System.out.println("[Client] ê²Œì„ ì‹œì‘! ì´ë¯¸ì§€ë¥¼ ëœë¤í•˜ê²Œ ë³´ì—¬ì¤ë‹ˆë‹¤");
           setrandomImg(m[1]);
           client.grf.startBtn.setVisible(false);
           client.grf.answerBtn.setVisible(true);
+          client.grf.skipBtn.setVisible(true);
         }
-        /* °ÔÀÓ ½ÃÀÛ */
-        
-        /* °ÔÀÓ ½ºÅµ */
-        else if(m[0].equals(gameSkip)) {
-          System.out.println("[Client] °ÔÀÓ ½ºÅµ! ÀÌ¹ÌÁö¸¦ ´Ù½Ã ¼¯½À´Ï´Ù.");
+        /* ê²Œì„ ì‹œì‘ */
+
+        /* ê²Œì„ ìŠ¤í‚µ */
+        else if (m[0].equals(gameSkip)) {
+          System.out.println("[Client] ê²Œì„ ìŠ¤í‚µ! ì´ë¯¸ì§€ë¥¼ ë‹¤ì‹œ ì„ìŠµë‹ˆë‹¤.");
           setrandomImg(m[1]);
           client.grf.count++;
         }
-        /* °ÔÀÓ ½ºÅµ */
-        
-        /* °ÔÀÓ Á¤´ä */
-        else if(m[0].equals(gameAnswer)) {
-          System.out.println("[Client] °ÔÀÔ Á¤´ä! ÀÌ¹ÌÁö¸¦ ´Ù½Ã ¼¯½À´Ï´Ù");
+        /* ê²Œì„ ìŠ¤í‚µ */
+
+        /* ê²Œì„ ì •ë‹µ */
+        else if (m[0].equals(gameAnswer)) {
+          System.out.println("[Client] ê²Œì… ì •ë‹µ! ì´ë¯¸ì§€ë¥¼ ë‹¤ì‹œ ì„ìŠµë‹ˆë‹¤");
           setrandomImg(m[1]);
           client.grf.count++;
         }
-        /* °ÔÀÓ Á¤´ä */
-        
-        /* °ÔÀÓ ³¡ */
-        else if(m[0].equals(gameEnd)) {
-          System.out.println("[Client] °ÔÀÓ ³¡!");
+        /* ê²Œì„ ì •ë‹µ */
+
+        /* ê²Œì„ ë */
+        else if (m[0].equals(gameEnd)) {
+          System.out.println("[Client] ê²Œì„ ë!");
           client.grf.startBtn.setVisible(true);
           client.grf.answerBtn.setVisible(false);
+          client.grf.skipBtn.setVisible(false);
           client.grf.ranImg.setIcon(null);
           client.grf.count = 0;
         }
-        /* °ÔÀÓ ³¡ */
+        /* ê²Œì„ ë */
       }
 
     } catch (Exception e) {
-      System.out.println("[Client] Error : ¸Ş½ÃÁö ¹Ş±â ¿À·ù > " + e.toString());
+      System.out.println("[Client] Error : ë©”ì‹œì§€ ë°›ê¸° ì˜¤ë¥˜ > " + e.toString());
     }
   }
 
-  /* ·Î±×ÀÎ ¼º°ø ¿©ºÎ¸¦ È®ÀÎÇÏ´Â ¸Ş¼Òµå */
+  /* ë¡œê·¸ì¸ ì„±ê³µ ì—¬ë¶€ë¥¼ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ */
   void loginCheck(String _m) {
     if (_m.equals("OKAY")) {
-      System.out.println("[Client] ·Î±×ÀÎ ¼º°ø : ´ë±â¹æ ¿­·³ : ·Î±×ÀÎ ÀÎÅÍÆäÀÌ½º Á¾·á");
+      System.out.println("[Client] ë¡œê·¸ì¸ ì„±ê³µ : ëŒ€ê¸°ë°© ì—´ëŸ¼ : ë¡œê·¸ì¸ ì¸í„°í˜ì´ìŠ¤ ì¢…ë£Œ");
       client.wrf.setVisible(true);
       client.lf.dispose();
     }
   }
 
 
-  /* ¹æ »ı¼º ¿©ºÎ¸¦ È®ÀÎÇÏ´Â ¸Ş¼Òµå */
+  /* ë°© ìƒì„± ì—¬ë¶€ë¥¼ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ */
   void createRoom(String _m) {
     if (_m.equals("OKAY")) {
-      System.out.println("[Client] °ÔÀÓ¹æ »ı¼ºÀÌ ¿Ï·á µÆ½À´Ï´Ù.");
+      System.out.println("[Client] ê²Œì„ë°© ìƒì„±ì´ ì™„ë£Œ ëìŠµë‹ˆë‹¤.");
       client.grf.setVisible(true);
       client.wrf.setVisible(false);
-      client.grf.setTitle(client.wrf.roomName); // »ı¼ºÇÑ ¹æÀÇ ÀÌ¸§À¸·Î µé¾î°£¹æÀÌ¸§¼³Á¤.
-      client.grf.host = true; // ¹æÀ» ¸¸µç»ç¶÷ÀÌ¸é Host°¡ µÈ´Ù.
+      client.grf.setTitle(client.wrf.roomName); // ìƒì„±í•œ ë°©ì˜ ì´ë¦„ìœ¼ë¡œ ë“¤ì–´ê°„ë°©ì´ë¦„ì„¤ì •.
+      client.grf.host = true; // ë°©ì„ ë§Œë“ ì‚¬ëŒì´ë©´ Hostê°€ ëœë‹¤.
     }
   }
 
-  /* Á¢¼Ó ÀÎ¿øÀ» Ãâ·ÂÇÏ´Â ¸Ş¼Òµå */
+  /* ì ‘ì† ì¸ì›ì„ ì¶œë ¥í•˜ëŠ” ë©”ì†Œë“œ */
   void viewCUser(String _m) {
     if (!_m.equals("")) {
       String[] user = _m.split("@");
@@ -236,7 +238,7 @@ class MessageListener extends Thread {
     }
   }
 
-  /* ¹æ ¸ñ·ÏÀ» Ãâ·ÂÇÏ´Â ¸Ş¼Òµå */
+  /* ë°© ëª©ë¡ì„ ì¶œë ¥í•˜ëŠ” ë©”ì†Œë“œ */
   void roomList(String _m) {
     if (!_m.equals("")) {
       String[] room = _m.split("@");
@@ -244,18 +246,18 @@ class MessageListener extends Thread {
     }
   }
 
-  /* ¹æ ÀÔÀå ¿©ºÎ¸¦ È®ÀÎÇÏ´Â ¸Ş¼Òµå */
+  /* ë°© ì…ì¥ ì—¬ë¶€ë¥¼ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ */
   void enterRoom(String _m) {
-    if (_m.equals("OKAY")) { // ¹æ ÀÔÀå¿¡ ¼º°ø Çß´Ù¸é.
-      System.out.println("[Client] °ÔÀÓ¹æ ÀÔÀå ¿Ï·á.");
+    if (_m.equals("OKAY")) { // ë°© ì…ì¥ì— ì„±ê³µ í–ˆë‹¤ë©´.
+      System.out.println("[Client] ê²Œì„ë°© ì…ì¥ ì™„ë£Œ.");
       client.grf.setVisible(true);
       client.wrf.setVisible(false);
-      client.grf.setTitle(client.wrf.selRoom); // ¼±ÅÃÇÑ ¹æÀÇ ÀÌ¸§À¸·Î µé¾î°£ ¹æÀÌ¸§ ¼³Á¤.
-      client.grf.host = false; // µé¾î°£»ç¶÷Àº°Ô½ºÆ®
+      client.grf.setTitle(client.wrf.selRoom); // ì„ íƒí•œ ë°©ì˜ ì´ë¦„ìœ¼ë¡œ ë“¤ì–´ê°„ ë°©ì´ë¦„ ì„¤ì •.
+      client.grf.host = false; // ë“¤ì–´ê°„ì‚¬ëŒì€ê²ŒìŠ¤íŠ¸
     }
   }
 
-  /* ¹æ ÀÎ¿ø ¸ñ·ÏÀ» Ãâ·ÂÇÏ´Â ¸Ş¼Òµå */
+  /* ë°© ì¸ì› ëª©ë¡ì„ ì¶œë ¥í•˜ëŠ” ë©”ì†Œë“œ */
   void roomUser(String _m) {
     if (!_m.equals("")) {
       String[] user = _m.split("@");
@@ -264,13 +266,13 @@ class MessageListener extends Thread {
   }
 
   void exitRoom() {
-    System.out.println("[Client] °ÔÀÓ¹æÀ» ³ª°©´Ï´Ù.");
+    System.out.println("[Client] ê²Œì„ë°©ì„ ë‚˜ê°‘ë‹ˆë‹¤.");
     client.grf.dispose();
     client.wrf.setVisible(true);
   }
 
   void setrandomImg(String _m) {
-    System.out.println("[Client] ÀÌ¹ÌÁö¸¦ ·£´ıÇÏ°Ô ³Ö½À´Ï´Ù!");
+    System.out.println("[Client] ì´ë¯¸ì§€ë¥¼ ëœë¤í•˜ê²Œ ë„£ìŠµë‹ˆë‹¤!");
     System.out.println(_m);
     client.grf.ranImg.setIcon(new ImageIcon(_m));
     String image = _m;
@@ -292,246 +294,245 @@ class MessageListener extends Thread {
     }
     client.grf.ranAnswer.setText(switchString(answerTemp));
   }
-  
-  
-  
-  
+
+
+
   String switchString(String data) {
     String temp = data;
     switch (temp) {
-    // ·Ñ
-    case "lolVeigar":
-      temp = "º£ÀÌ°¡";
-      break;
-    case "lolAshe":
-      temp = "¾Ö½¬";
-      break;
-    case "lolGalio":
-      temp = "°¥¸®¿À";
-      break;
-    case "lolJanna":
-      temp = "ÀÜ³ª";
-      break;
-    case "lolKaisa":
-      temp = "Ä«ÀÌ»ç";
-      break;
-    case "lolRakan":
-      temp = "¶óÄ­";
-      break;
-    case "lolLuLu":
-      temp = "·ê·ç";
-      break;
-    case "lolMaokai":
-      temp = "¸¶¿ÀÄ«ÀÌ";
-      break;
-    case "lolTeemo":
-      temp = "Æ¼¸ğ";
-      break;
-    case "lolThresh":
-      temp = "¾²·¹½¬";
-      break;
-    case "lolViego":
-      temp = "ºñ¿¡°í";
-      break;
-    case "lolNocturn":
-      temp = "³ìÅÏ";
-      break;
-    case "lolRiven":
-      temp = "¸®ºì";
-      break;
-    case "lolYuumi":
-      temp = "À¯¹Ì";
-      break;
-    case "lolYorick":
-      temp = "¿ä¸¯";
-      break;
-    // ¿À¹ö¿öÄ¡
-    case "overWinston":
-      temp = "À©½ºÅÏ";
-      break;
-    case "overTracer":
-      temp = "Æ®·¹ÀÌ¼­";
-      break;
-    case "overSombra":
-      temp = "¼Øºê¶ó";
-      break;
-    case "overReaper":
-      temp = "¸®ÆÛ";
-      break;
-    case "overRack":
-      temp = "·¹Å·º¼";
-      break;
-    case "overDva":
-      temp = "µğ¹Ù";
-      break;
-    case "overEcho":
-      temp = "¿¡ÄÚ";
-      break;
-    case "overAshe":
-      temp = "¾Ö½¬";
-      break;
-    case "overDoom":
-      temp = "µÒÇÇ½ºÆ®";
-      break;
-    case "overAna":
-      temp = "¾Æ³ª";
-      break;
-    case "over76":
-      temp = "¼ÖÁ®76";
-      break;
-    case "overGenji":
-      temp = "°ÕÁö";
-      break;
-    case "overMercy":
-      temp = "¸Ş¸£½Ã";
-      break;
-    case "overOrisa":
-      temp = "¿À¸®»ç";
-      break;
-    case "overHog":
-      temp = "·ÎµåÈ£±×";
-      break;
-    //µ¿¹°
-    case "animalAlpaca":
-      temp = "¾ËÆÄÄ«";
-      break;
-    case "animalCamel":
-      temp = "³«Å¸";
-      break;
-    case "animalCat":
-      temp = "°í¾çÀÌ";
-      break;
-    case "animalDuck":
-      temp = "¿À¸®";
-      break;
-    case "animalHamster":
-      temp = "ÇÜ½ºÅÍ";
-      break;
-    case "animalHorse":
-      temp = "¸»";
-      break;
-    case "animalMeerkat":
-      temp = "¹Ì¾îÄ¹";
-      break;
-    case "animalMonkey":
-      temp = "¿ø¼şÀÌ";
-      break;
-    case "animalOstrich":
-      temp = "Å¸Á¶";
-      break;
-    case "animalPanda":
-      temp = "ÆÇ´Ù";
-      break;
-    case "animalPig":
-      temp = "µÅÁö";
-      break;
-    case "animalPuppy":
-      temp = "°­¾ÆÁö";
-      break;
-    case "animalSheep":
-      temp = "¾ç";
-      break;
-    case "animalSquirrel":
-      temp = "´Ù¶÷Áã";
-      break;
-    case "animalTiger":
-      temp = "È£¶ûÀÌ";
-      break;
-    //¾Ö´Ï¸ŞÀÌ¼Ç
-    case "animationAgumon":
-      temp = "¾Æ±¸¸ó";
-      break;
-    case "animationBisiri":
-      temp = "ºñ½ÇÀÌ";
-      break;
-    case "animationBonobono":
-      temp = "º¸³ëº¸³ë";
-      break;
-    case "animationBreadman":
-      temp = "½Ä»§¸Ç";
-      break;
-    case "animationDdung":
-      temp = "¶×ÀÌ";
-      break;
-    case "animationDulli":
-      temp = "µÑ¸®";
-      break;
-    case "animationInuyasha":
-      temp = "ÀÌ´©¾ß»ş";
-      break;
-    case "animationKeroro":
-      temp = "ÄÉ·Î·Î";
-      break;
-    case "animationKonan":
-      temp = "ÄÚ³­";
-      break;
-    case "animationLoopy":
-      temp = "·çÇÇ";
-      break;
-    case "animationNaruto":
-      temp = "³ª·çÅä";
-      break;
-    case "animationSonongong":
-      temp = "¼Õ¿À°ø";
-      break;
-    case "animationTotoro":
-      temp = "ÅäÅä·Î";
-      break;
-    case "animationZoro":
-      temp = "Á¶·Î";
-      break;
-    case "animationZzanggu":
-      temp = "Â¯±¸";
-      break;
-    //Æ÷ÄÏ¸ó
-    case "pokeChikorita":
-      temp = "Ä¡ÄÚ¸®Å¸";
-      break;
-    case "pokeDdogas":
-      temp = "¶Ç°¡½º";
-      break;
-    case "pokeEvee":
-      temp = "ÀÌºêÀÌ";
-      break;
-    case "pokeFiry":
-      temp = "ÆÄÀÌ¸®";
-      break;
-    case "pokeGorapaduck":
-      temp = "°í¶óÆÄ´ö";
-      break;
-    case "pokeJammanbo":
-      temp = "Àá¸¸º¸";
-      break;
-    case "pokeKkobugi":
-      temp = "²¿ºÎ±â";
-      break;
-    case "pokeKkojimo":
-      temp = "²¿Áö¸ğ";
-      break;
-    case "pokeMangnanyong":
-      temp = "¸Á³ª´¨";
-      break;
-    case "pokeModapi":
-      temp = "¸ğ´ÙÇÇ";
-      break;
-    case "pokeNamujigi":
-      temp = "³ª¹«Áö±â";
-      break;
-    case "pokeNyaong":
-      temp = "³Ä¿ËÀÌ";
-      break;
-    case "pokePikachu":
-      temp = "ÇÇÄ«Ãò";
-      break;
-    case "pokeTogepi":
-      temp = "Åä°ÔÇÇ";
-      break;
-    case "pokeYadoran":
-      temp = "¾ßµµ¶õ";
-      break;
-    case "pokeYisanghaessi":
-      temp = "ÀÌ»óÇØ¾¾";
-      break;
+      // ë¡¤
+      case "lolVeigar":
+        temp = "ë² ì´ê°€";
+        break;
+      case "lolAshe":
+        temp = "ì• ì‰¬";
+        break;
+      case "lolGalio":
+        temp = "ê°ˆë¦¬ì˜¤";
+        break;
+      case "lolJanna":
+        temp = "ì”ë‚˜";
+        break;
+      case "lolKaisa":
+        temp = "ì¹´ì´ì‚¬";
+        break;
+      case "lolRakan":
+        temp = "ë¼ì¹¸";
+        break;
+      case "lolLuLu":
+        temp = "ë£°ë£¨";
+        break;
+      case "lolMaokai":
+        temp = "ë§ˆì˜¤ì¹´ì´";
+        break;
+      case "lolTeemo":
+        temp = "í‹°ëª¨";
+        break;
+      case "lolThresh":
+        temp = "ì“°ë ˆì‰¬";
+        break;
+      case "lolViego":
+        temp = "ë¹„ì—ê³ ";
+        break;
+      case "lolNocturn":
+        temp = "ë…¹í„´";
+        break;
+      case "lolRiven":
+        temp = "ë¦¬ë¸";
+        break;
+      case "lolYuumi":
+        temp = "ìœ ë¯¸";
+        break;
+      case "lolYorick":
+        temp = "ìš”ë¦­";
+        break;
+      // ì˜¤ë²„ì›Œì¹˜
+      case "overWinston":
+        temp = "ìœˆìŠ¤í„´";
+        break;
+      case "overTracer":
+        temp = "íŠ¸ë ˆì´ì„œ";
+        break;
+      case "overSombra":
+        temp = "ì†œë¸Œë¼";
+        break;
+      case "overReaper":
+        temp = "ë¦¬í¼";
+        break;
+      case "overRack":
+        temp = "ë ˆí‚¹ë³¼";
+        break;
+      case "overDva":
+        temp = "ë””ë°”";
+        break;
+      case "overEcho":
+        temp = "ì—ì½”";
+        break;
+      case "overAshe":
+        temp = "ì• ì‰¬";
+        break;
+      case "overDoom":
+        temp = "ë‘ í”¼ìŠ¤íŠ¸";
+        break;
+      case "overAna":
+        temp = "ì•„ë‚˜";
+        break;
+      case "over76":
+        temp = "ì†”ì ¸76";
+        break;
+      case "overGenji":
+        temp = "ê²ì§€";
+        break;
+      case "overMercy":
+        temp = "ë©”ë¥´ì‹œ";
+        break;
+      case "overOrisa":
+        temp = "ì˜¤ë¦¬ì‚¬";
+        break;
+      case "overHog":
+        temp = "ë¡œë“œí˜¸ê·¸";
+        break;
+      // ë™ë¬¼
+      case "animalAlpaca":
+        temp = "ì•ŒíŒŒì¹´";
+        break;
+      case "animalCamel":
+        temp = "ë‚™íƒ€";
+        break;
+      case "animalCat":
+        temp = "ê³ ì–‘ì´";
+        break;
+      case "animalDuck":
+        temp = "ì˜¤ë¦¬";
+        break;
+      case "animalHamster":
+        temp = "í–„ìŠ¤í„°";
+        break;
+      case "animalHorse":
+        temp = "ë§";
+        break;
+      case "animalMeerkat":
+        temp = "ë¯¸ì–´ìº£";
+        break;
+      case "animalMonkey":
+        temp = "ì›ìˆ­ì´";
+        break;
+      case "animalOstrich":
+        temp = "íƒ€ì¡°";
+        break;
+      case "animalPanda":
+        temp = "íŒë‹¤";
+        break;
+      case "animalPig":
+        temp = "ë¼ì§€";
+        break;
+      case "animalPuppy":
+        temp = "ê°•ì•„ì§€";
+        break;
+      case "animalSheep":
+        temp = "ì–‘";
+        break;
+      case "animalSquirrel":
+        temp = "ë‹¤ëŒì¥";
+        break;
+      case "animalTiger":
+        temp = "í˜¸ë‘ì´";
+        break;
+      // ì• ë‹ˆë©”ì´ì…˜
+      case "animationAgumon":
+        temp = "ì•„êµ¬ëª¬";
+        break;
+      case "animationBisiri":
+        temp = "ë¹„ì‹¤ì´";
+        break;
+      case "animationBonobono":
+        temp = "ë³´ë…¸ë³´ë…¸";
+        break;
+      case "animationBreadman":
+        temp = "ì‹ë¹µë§¨";
+        break;
+      case "animationDdung":
+        temp = "ëš±ì´";
+        break;
+      case "animationDulli":
+        temp = "ë‘˜ë¦¬";
+        break;
+      case "animationInuyasha":
+        temp = "ì´ëˆ„ì•¼ìƒ¤";
+        break;
+      case "animationKeroro":
+        temp = "ì¼€ë¡œë¡œ";
+        break;
+      case "animationKonan":
+        temp = "ì½”ë‚œ";
+        break;
+      case "animationLoopy":
+        temp = "ë£¨í”¼";
+        break;
+      case "animationNaruto":
+        temp = "ë‚˜ë£¨í† ";
+        break;
+      case "animationSonongong":
+        temp = "ì†ì˜¤ê³µ";
+        break;
+      case "animationTotoro":
+        temp = "í† í† ë¡œ";
+        break;
+      case "animationZoro":
+        temp = "ì¡°ë¡œ";
+        break;
+      case "animationZzanggu":
+        temp = "ì§±êµ¬";
+        break;
+      // í¬ì¼“ëª¬
+      case "pokeChikorita":
+        temp = "ì¹˜ì½”ë¦¬íƒ€";
+        break;
+      case "pokeDdogas":
+        temp = "ë˜ê°€ìŠ¤";
+        break;
+      case "pokeEvee":
+        temp = "ì´ë¸Œì´";
+        break;
+      case "pokeFiry":
+        temp = "íŒŒì´ë¦¬";
+        break;
+      case "pokeGorapaduck":
+        temp = "ê³ ë¼íŒŒë•";
+        break;
+      case "pokeJammanbo":
+        temp = "ì ë§Œë³´";
+        break;
+      case "pokeKkobugi":
+        temp = "ê¼¬ë¶€ê¸°";
+        break;
+      case "pokeKkojimo":
+        temp = "ê¼¬ì§€ëª¨";
+        break;
+      case "pokeMangnanyong":
+        temp = "ë§ë‚˜ë‡½";
+        break;
+      case "pokeModapi":
+        temp = "ëª¨ë‹¤í”¼";
+        break;
+      case "pokeNamujigi":
+        temp = "ë‚˜ë¬´ì§€ê¸°";
+        break;
+      case "pokeNyaong":
+        temp = "ëƒì˜¹ì´";
+        break;
+      case "pokePikachu":
+        temp = "í”¼ì¹´ì¸„";
+        break;
+      case "pokeTogepi":
+        temp = "í† ê²Œí”¼";
+        break;
+      case "pokeYadoran":
+        temp = "ì•¼ë„ë€";
+        break;
+      case "pokeYisanghaessi":
+        temp = "ì´ìƒí•´ì”¨";
+        break;
     }
     return temp;
   }
