@@ -5,7 +5,7 @@ import application.LoginFrame.ButtonListener;
 import java.awt.*;
 import java.awt.event.*;
 
-// ´ë±â½Ç ±â´ÉÀ» ÇÏ´Â ÀÎÅÍÆäÀÌ½º!
+// ëŒ€ê¸°ì‹¤ ê¸°ëŠ¥ì„ í•˜ëŠ” ì¸í„°í˜ì´ìŠ¤!
 public class WaitRoomFrame extends JFrame {
 
   /* Panel */
@@ -14,8 +14,8 @@ public class WaitRoomFrame extends JFrame {
   JPanel eastPanel = new JPanel();
 
   /* Label */
-  JLabel roomListL = new JLabel("================ °ÔÀÓ¹æ ¸ñ·Ï ================");
-  JLabel cuListL = new JLabel("======= Á¢¼Ó ÀÎ¿ø =======");
+  JLabel roomListL = new JLabel("================ ê²Œì„ë°© ëª©ë¡ ================");
+  JLabel cuListL = new JLabel("======= ì ‘ì† ì¸ì› =======");
 
   /* ScrollPane */
   JScrollPane rL_sp;
@@ -26,45 +26,53 @@ public class WaitRoomFrame extends JFrame {
   JList<String> cuList = new JList<String>();
 
   /* Button */
-  JButton createRoom = new JButton("¹æ »ı¼ºÇÏ±â");
-  JButton enterRoom = new JButton("¹æ ÀÔÀåÇÏ±â");
-  JButton exitGame = new JButton("°ÔÀÓ Á¾·áÇÏ±â");
+  JButton createRoom = new JButton("ë°© ìƒì„±í•˜ê¸°");
+  JButton enterRoom = new JButton("ë°© ì…ì¥í•˜ê¸°");
+  JButton exitGame = new JButton("ê²Œì„ ì¢…ë£Œí•˜ê¸°");
 
-  String selRoom; // ¼±ÅÃµÈ ¹æ Á¦¸ñ
-  String roomName; // »ı¼ºÇÒ ¹æ Á¦¸ñ
+  String selRoom; // ì„ íƒëœ ë°© ì œëª©
+  String roomName; // ìƒì„±í•  ë°© ì œëª©
 
   GameClient c = null;
 
-  final String croomTag = "CROOM"; // ¹æ »ı¼º ±â´É ÅÂ±×
-  final String eroomTag = "EROOM"; // ¹æ ÀÔÀå ±â´É ÅÂ±×
-  final String pexitTag = "PEXIT"; // ÇÁ·Î±×·¥ Á¾·á ±â´É ÅÂ±×
+  final String croomTag = "CROOM"; // ë°© ìƒì„± ê¸°ëŠ¥ íƒœê·¸
+  final String eroomTag = "EROOM"; // ë°© ì…ì¥ ê¸°ëŠ¥ íƒœê·¸
+  final String pexitTag = "PEXIT"; // í”„ë¡œê·¸ë¨ ì¢…ë£Œ ê¸°ëŠ¥ íƒœê·¸
 
   WaitRoomFrame(GameClient _c) {
     c = _c;
 
-    setTitle("°ÔÀÓ ´ë±â½ÇÀÔ´Ï´Ù!");
+    setTitle("ê²Œì„ ëŒ€ê¸°ì‹¤ì…ë‹ˆë‹¤!");
 
-    /* Panel Å©±â ÀÛ¾÷ */
+    /* Panel í¬ê¸° ì‘ì—… */
+    centerPanel.setBackground(Color.PINK);
     centerPanel.setPreferredSize(new Dimension(310, basePanel.getHeight()));
+    eastPanel.setBackground(Color.PINK);
     eastPanel.setPreferredSize(new Dimension(180, basePanel.getHeight()));
 
-    /* Label Å©±â ÀÛ¾÷ */
+    /* Label í¬ê¸° ì‘ì—… */
     roomListL.setPreferredSize(new Dimension(290, 20));
     cuListL.setPreferredSize(new Dimension(160, 20));
 
-    /* ScrollPane Å©±â ÀÛ¾÷ */
+    /* ScrollPane í¬ê¸° ì‘ì—… */
     rL_sp = new JScrollPane(rList);
     cL_sp = new JScrollPane(cuList);
     rL_sp.setPreferredSize(new Dimension(300, 350));
     cL_sp.setPreferredSize(new Dimension(160, 188));
 
-    /* Button Å©±â ÀÛ¾÷ */
+    /* Button í¬ê¸° ì‘ì—… */
+    createRoom.setBackground(new Color(230, 230, 250));
+    createRoom.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     createRoom.setPreferredSize(new Dimension(160, 35));
+    enterRoom.setBackground(new Color(230, 230, 250));
+    enterRoom.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     enterRoom.setPreferredSize(new Dimension(160, 35));
+    exitGame.setBackground(new Color(230, 230, 250));
+    exitGame.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     exitGame.setPreferredSize(new Dimension(160, 35));
 
-    /* Panel Ãß°¡ ÀÛ¾÷ */
-    setContentPane(basePanel); // panelÀ» ±âº» ÄÁÅ×ÀÌ³Ê·Î ¼³Á¤
+    /* Panel ì¶”ê°€ ì‘ì—… */
+    setContentPane(basePanel); // panelì„ ê¸°ë³¸ ì»¨í…Œì´ë„ˆë¡œ ì„¤ì •
 
     basePanel.add(centerPanel, BorderLayout.CENTER);
     basePanel.add(eastPanel, BorderLayout.EAST);
@@ -75,21 +83,21 @@ public class WaitRoomFrame extends JFrame {
     centerPanel.add(roomListL);
     centerPanel.add(rL_sp);
 
-    /* eastPanel ÄÄÆ÷³ÍÆ® */
+    /* eastPanel ì»´í¬ë„ŒíŠ¸ */
     eastPanel.add(cuListL);
     eastPanel.add(cL_sp);
     eastPanel.add(createRoom);
     eastPanel.add(enterRoom);
     eastPanel.add(exitGame);
 
-    /* ¹öÆ° ÀÌº¥Æ® ¸®½º³Ê Ãß°¡ */
+    /* ë²„íŠ¼ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€ */
     ButtonListener b1 = new ButtonListener();
 
     createRoom.addActionListener(b1);
     enterRoom.addActionListener(b1);
     exitGame.addActionListener(b1);
 
-    /* ¸¶¿ì½º ÀÌº¥Æ® ¸®½º³Ê Ãß°¡ */
+    /* ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€ */
     rList.addMouseListener(new MouseListener() {
 
       @Override
@@ -115,41 +123,41 @@ public class WaitRoomFrame extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  /* Button ÀÌº¥Æ® ¸®½º³Ê */
+  /* Button ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ */
   class ButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
       JButton b = (JButton) e.getSource();
 
-      /* ¹æ »ı¼ºÇÏ±â ÀÌº¥Æ® */
-      if (b.getText().equals("¹æ »ı¼ºÇÏ±â")) {
-        // »ı¼ºÇÒ ¹æÀÇ Á¦¸ñÀ» ÀÔ·Â¹Ş´Â´Ù.
-        roomName = JOptionPane.showInputDialog(null, "»ı¼ºÇÒ ¹æ Á¦¸ñÀ» ÀÔ·ÂÇÏ¼¼¿ä.", "°ÔÀÓ¹æ »ı¼º",
+      /* ë°© ìƒì„±í•˜ê¸° ì´ë²¤íŠ¸ */
+      if (b.getText().equals("ë°© ìƒì„±í•˜ê¸°")) {
+        // ìƒì„±í•  ë°©ì˜ ì œëª©ì„ ì…ë ¥ë°›ëŠ”ë‹¤.
+        roomName = JOptionPane.showInputDialog(null, "ìƒì„±í•  ë°© ì œëª©ì„ ì…ë ¥í•˜ì„¸ìš”.", "ê²Œì„ë°© ìƒì„±",
             JOptionPane.QUESTION_MESSAGE);
 
-        if (roomName != null) { // roomNameÀÌ nullÀÌ ¾Æ´Ï¸é ¼­¹ö¿¡ "Tag//¹æÀÌ¸§" ÇüÅÂ·Î ¸Ş½ÃÁö¸¦ Àü¼Û
+        if (roomName != null) { // roomNameì´ nullì´ ì•„ë‹ˆë©´ ì„œë²„ì— "Tag//ë°©ì´ë¦„" í˜•íƒœë¡œ ë©”ì‹œì§€ë¥¼ ì „ì†¡
           c.sendMsg(croomTag + "//" + roomName);
-        } else { // nullÀÌ¸é »ı¼º ½ÇÆĞ·Î dialog Ãâ·Â
-          JOptionPane.showMessageDialog(null, "¹æ Á¦¸ñÀ» ÀÔ·ÂÇÏ¼Å¾ßÁö »ı¼ºµË´Ï´Ù.", "°ÔÀÓ¹æ »ı¼º ½ÇÆĞ",
+        } else { // nullì´ë©´ ìƒì„± ì‹¤íŒ¨ë¡œ dialog ì¶œë ¥
+          JOptionPane.showMessageDialog(null, "ë°© ì œëª©ì„ ì…ë ¥í•˜ì…”ì•¼ì§€ ìƒì„±ë©ë‹ˆë‹¤.", "ê²Œì„ë°© ìƒì„± ì‹¤íŒ¨",
               JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] ¹æ »ı¼º ¿À·ù : ¹æ Á¦¸ñÀ» ÀÔ·ÂÀ» ¾ÈÇØ¼­ ¿À·ù¹ß»ı.");
+          System.out.println("[Client] ë°© ìƒì„± ì˜¤ë¥˜ : ë°© ì œëª©ì„ ì…ë ¥ì„ ì•ˆí•´ì„œ ì˜¤ë¥˜ë°œìƒ.");
         }
       }
-      /* ¹æ ÀÔÀåÇÏ±â ¹öÆ° ÀÌº¥Æ® */
-      else if (b.getText().equals("¹æ ÀÔÀåÇÏ±â")) {
-        if (selRoom != null) { // selRoomÀÌ nullÀÌ ¾Æ´Ï¸é ¼­¹ö¿¡ "Tag//¹æÀÌ¸§" ÇüÅÂÀÇ ¸Ş½ÃÁö¸¦ Àü¼Û
+      /* ë°© ì…ì¥í•˜ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("ë°© ì…ì¥í•˜ê¸°")) {
+        if (selRoom != null) { // selRoomì´ nullì´ ì•„ë‹ˆë©´ ì„œë²„ì— "Tag//ë°©ì´ë¦„" í˜•íƒœì˜ ë©”ì‹œì§€ë¥¼ ì „ì†¡
           c.sendMsg(eroomTag + "//" + selRoom);
-        } else { // nullÀÌ¸é ÀÔÀå ½ÇÆĞ·Î dialog Ãâ·Â
-          JOptionPane.showMessageDialog(null, "ÀÔÀåÇÒ ¹æÀ» ¼±ÅÃÇÏ¼Å¾ßÁö ÀÔÀåµË´Ï´Ù.", "°ÔÀÓ¹æ ÀÔÀå½ÇÆĞ",
+        } else { // nullì´ë©´ ì…ì¥ ì‹¤íŒ¨ë¡œ dialog ì¶œë ¥
+          JOptionPane.showMessageDialog(null, "ì…ì¥í•  ë°©ì„ ì„ íƒí•˜ì…”ì•¼ì§€ ì…ì¥ë©ë‹ˆë‹¤.", "ê²Œì„ë°© ì…ì¥ì‹¤íŒ¨",
               JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] ÀÔÀå ¿À·ù : ¹æÀÌ ¼±ÅÃµÇÁö ¾Ê°Å³ª ¿Ã¹Ù¸£Áö ¾ÊÀº °ªÀ» ¼±ÅÃÇÔ.");
+          System.out.println("[Client] ì…ì¥ ì˜¤ë¥˜ : ë°©ì´ ì„ íƒë˜ì§€ ì•Šê±°ë‚˜ ì˜¬ë°”ë¥´ì§€ ì•Šì€ ê°’ì„ ì„ íƒí•¨.");
         }
       }
-      /* °ÔÀÓ Á¾·áÇÏ±â ¹öÆ° ÀÌº¥Æ® */
-      else if (b.getText().equals("°ÔÀÓ Á¾·áÇÏ±â")) {
-        System.out.println("[Client] °ÔÀÓ Á¾·á.");
-        c.sendMsg(pexitTag + "//"); // ¼­¹ö¿¡ ÇÁ·Î±×·¥ÀÌ Á¾·áµÆ´Ù´Â ÅÂ±×¸¦ Àü¼Û
+      /* ê²Œì„ ì¢…ë£Œí•˜ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("ê²Œì„ ì¢…ë£Œí•˜ê¸°")) {
+        System.out.println("[Client] ê²Œì„ ì¢…ë£Œ.");
+        c.sendMsg(pexitTag + "//"); // ì„œë²„ì— í”„ë¡œê·¸ë¨ì´ ì¢…ë£Œëë‹¤ëŠ” íƒœê·¸ë¥¼ ì „ì†¡
         System.exit(0);
       }
     }

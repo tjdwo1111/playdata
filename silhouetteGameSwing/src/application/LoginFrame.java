@@ -1,136 +1,133 @@
 package application;
 
 import javax.swing.*;
+
+import application.LoginFrame.ButtonListener;
+import application.LoginFrame.KeyBoardListener;
+
 import java.awt.*;
 import java.awt.event.*;
 
-// ·Î±×ÀÎ ±â´ÉÀ» ¼öÇàÇÏ´Â ÀÎÅÍÆäÀÌ½º.
+// ë¡œê·¸ì¸ ê¸°ëŠ¥ì„ ìˆ˜í–‰í•˜ëŠ” ì¸í„°í˜ì´ìŠ¤.
 public class LoginFrame extends JFrame {
 
   /* Panel */
   JPanel basePanel = new JPanel(new BorderLayout());
-  JPanel centerPanel = new JPanel(new BorderLayout());
-  JPanel westPanel = new JPanel();
-  JPanel eastPanel = new JPanel();
-  JPanel southPanel = new JPanel();
-
-  /* Label */
-  JLabel naL = new JLabel("ÀÌ¸§");
-  /* TextField */
-  JTextField nameField = new JTextField();
-  /* Button */
-  JButton loginBtn = new JButton("°ÔÀÓÀÔÀå");
-  JButton exitBtn = new JButton("Á¾·á");
+  JPanel centerPanel = new JPanel();
 
   GameClient c = null;
 
   final String loginTag = "LOGIN";
 
+  JButton loginBtn = new JButton("ëŒ€ê¸°ì‹¤ ì…ì¥");
+  JLabel naL = new JLabel("ì´ë¦„");
+  JTextField nameField = new JTextField();
+  JButton exitBtn = new JButton("ì¢…ë£Œ");
+
   LoginFrame(GameClient _c) {
     c = _c;
+    nameField.setBackground(new Color(230, 230, 250));
 
-    setTitle("ÀÌ¸§À» ÀÔ·ÂÇØ¼­ ·Î±×ÀÎ ÇÏ¼¼¿ä!");
+    nameField.setBounds(85, 53, 226, 38);
+    nameField.setColumns(10);
 
-    /* Panel Å©±â ÀÛ¾÷ */
+    setTitle("ì´ë¦„ì„ ì…ë ¥í•´ì„œ ë¡œê·¸ì¸ í•˜ì„¸ìš”!");
+
+    /* Panel í¬ê¸° ì‘ì—… */
+    centerPanel.setBackground(Color.PINK);
     centerPanel.setPreferredSize(new Dimension(260, 80));
-    westPanel.setPreferredSize(new Dimension(210, 75));
-    eastPanel.setPreferredSize(new Dimension(90, 75));
-    southPanel.setPreferredSize(new Dimension(290, 40));
+    loginBtn.setBackground(new Color(230, 230, 250));
+    loginBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
+    loginBtn.setBounds(85, 120, 107, 33);
+    naL.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 14));
+    naL.setForeground(Color.BLACK);
+    naL.setHorizontalAlignment(SwingConstants.CENTER);
+    naL.setBounds(23, 53, 62, 35);
+    exitBtn.setBackground(new Color(230, 230, 250));
+    exitBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
+    exitBtn.setBounds(204, 120, 107, 33);
 
-    /* Label Å©±â ÀÛ¾÷ */
-    naL.setPreferredSize(new Dimension(50, 60));
-
-    /* TextField Å©±â ÀÛ¾÷ */
-    nameField.setPreferredSize(new Dimension(140, 60));
-
-    /* Button Å©±â ÀÛ¾÷ */
-    loginBtn.setPreferredSize(new Dimension(100, 63));
-    exitBtn.setPreferredSize(new Dimension(135, 50));
-
-    /* Panel Ãß°¡ ÀÛ¾÷ */
-    setContentPane(basePanel); // panelÀ» ±âº» ÄÁÅ×ÀÌ³Ê·Î ¼³Á¤
+    setContentPane(basePanel); // panelì„ ê¸°ë³¸ ì»¨í…Œì´ë„ˆë¡œ ì„¤ì •
 
     basePanel.add(centerPanel, BorderLayout.CENTER);
-    basePanel.add(southPanel, BorderLayout.SOUTH);
-    centerPanel.add(westPanel, BorderLayout.WEST);
-    centerPanel.add(eastPanel, BorderLayout.EAST);
+    centerPanel.setLayout(null);
+    loginBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {}
+    });
 
-    westPanel.setLayout(new FlowLayout());
-    eastPanel.setLayout(new FlowLayout());
-    southPanel.setLayout(new FlowLayout());
+    /* Panel ì¶”ê°€ ì‘ì—… */
+    centerPanel.add(loginBtn);
+    centerPanel.add(naL);
+    centerPanel.add(nameField);
+    centerPanel.add(exitBtn);
 
-    /* westPanel ÄÄÆ÷³ÍÆ® */
-    westPanel.add(naL);
-    westPanel.add(nameField);
 
-    /* eastPanel ÄÄÆ÷³ÍÆ® */
-    eastPanel.add(loginBtn);
 
-    /* southPanel ÄÄÆ÷³ÍÆ® */
-    southPanel.add(exitBtn);
+    exitBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {}
+    });
 
-    /* Button ÀÌº¥Æ® ¸®½º³Ê Ãß°¡ */
+    /* Button ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€ */
     ButtonListener bl = new ButtonListener();
 
     loginBtn.addActionListener(bl);
     exitBtn.addActionListener(bl);
 
 
-    /* Key ÀÌº¥Æ® ¸®½º³Ê Ãß°¡ */
+    /* Key ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€ */
     KeyBoardListener kl = new KeyBoardListener();
     naL.addKeyListener(kl);
-    setSize(310, 150);
+    setSize(370, 192);
     setLocationRelativeTo(null);
     setVisible(true);
     setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  /* Button ÀÌº¥Æ® ¸®½º³Ê */
+  /* Button ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ */
   class ButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
       JButton b = (JButton) e.getSource();
 
-      /* TextField¿¡ ÀÔ·ÂµÈ ÀÌ¸§À» º¯¼ö¿¡ ÃÊ±âÈ­ */
+      /* TextFieldì— ì…ë ¥ëœ ì´ë¦„ì„ ë³€ìˆ˜ì— ì´ˆê¸°í™” */
       String name = nameField.getText();
 
-      /* Á¾·á¹öÆ° ÀÌº¥Æ® */
-      if (b.getText().equals("Á¾·á")) {
-        System.out.println("[Client] °ÔÀÓ Á¾·á");
+      /* ì¢…ë£Œë²„íŠ¼ ì´ë²¤íŠ¸ */
+      if (b.getText().equals("ì¢…ë£Œ")) {
+        System.out.println("[Client] ê²Œì„ ì¢…ë£Œ");
         System.exit(0);
       }
 
-      else if (b.getText().equals("°ÔÀÓÀÔÀå")) {
-        if (name.equals("")) { // ÀÌ¸§ ¹ÌÀÔ·Â½Ã ´ë±â½ÇÀÔÀå ½ÇÆĞ
-          JOptionPane.showMessageDialog(null, "ÀÌ¸§À» ÀÔ·ÂÇÏ¼Å¾ßÁö ÀÔÀåÀÌ µË´Ï´Ù!!!", "ÀÔÀå ½ÇÆĞ!",
+      else if (b.getText().equals("ëŒ€ê¸°ì‹¤ ì…ì¥")) {
+        if (name.equals("")) { // ì´ë¦„ ë¯¸ì…ë ¥ì‹œ ëŒ€ê¸°ì‹¤ì…ì¥ ì‹¤íŒ¨
+          JOptionPane.showMessageDialog(null, "ì´ë¦„ì„ ì…ë ¥í•˜ì…”ì•¼ì§€ ì…ì¥ì´ ë©ë‹ˆë‹¤!!!", "ì…ì¥ ì‹¤íŒ¨!",
               JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] ·Î±×ÀÎ ½ÇÆĞ!!! : ÀÌ¸§À» ¹ÌÀÔ·Â ");
-        } else if (!name.equals("")) { // ÀÔÀå ¼º°ø½Ã
-          c.sendMsg(loginTag + "//" + name); // ¼­¹ö¿¡ ÀÔÀå Á¤º¸¸¦ Àü¼ÛÇÑ´Ù!
+          System.out.println("[Client] ë¡œê·¸ì¸ ì‹¤íŒ¨!!! : ì´ë¦„ì„ ë¯¸ì…ë ¥ ");
+        } else if (!name.equals("")) { // ì…ì¥ ì„±ê³µì‹œ
+          c.sendMsg(loginTag + "//" + name); // ì„œë²„ì— ì…ì¥ ì •ë³´ë¥¼ ì „ì†¡í•œë‹¤!
         }
       }
     }
+  }// ButtonEvent
 
-  } // ButtonEvent
-
-  /* Key ÀÌº¥Æ® ¸®½º³Ê */
+  /* Key ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ */
   class KeyBoardListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
       // Enter Key Event
 
       if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-        /* TextField¿¡ ÀÔ·ÂµÈ ÀÌ¸§À» º¯¼ö¿¡ ÃÊ±âÈ­ */
+        /* TextFieldì— ì…ë ¥ëœ ì´ë¦„ì„ ë³€ìˆ˜ì— ì´ˆê¸°í™” */
         String name = nameField.getText();
 
-        if (name.equals("")) { // ÀÌ¸§ ¹ÌÀÔ·Â½Ã ´ë±â½ÇÀÔÀå ½ÇÆĞ
-          JOptionPane.showMessageDialog(null, "ÀÌ¸§À» ÀÔ·ÂÇÏ¼Å¾ßÁö ÀÔÀåÀÌ µË´Ï´Ù!!!", "ÀÔÀå ½ÇÆĞ!",
+        if (name.equals("")) { // ì´ë¦„ ë¯¸ì…ë ¥ì‹œ ëŒ€ê¸°ì‹¤ì…ì¥ ì‹¤íŒ¨
+          JOptionPane.showMessageDialog(null, "ì´ë¦„ì„ ì…ë ¥í•˜ì…”ì•¼ì§€ ì…ì¥ì´ ë©ë‹ˆë‹¤!!!", "ì…ì¥ ì‹¤íŒ¨!",
               JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] ·Î±×ÀÎ ½ÇÆĞ!!! : ÀÌ¸§À» ¹ÌÀÔ·Â ");
-        } else if (!name.equals("")) { // ÀÔÀå ¼º°ø½Ã
-          c.sendMsg(loginTag + "//" + name); // ¼­¹ö¿¡ ÀÔÀå Á¤º¸¸¦ Àü¼ÛÇÑ´Ù!
+          System.out.println("[Client] ë¡œê·¸ì¸ ì‹¤íŒ¨!!! : ì´ë¦„ì„ ë¯¸ì…ë ¥ ");
+        } else if (!name.equals("")) { // ì…ì¥ ì„±ê³µì‹œ
+          c.sendMsg(loginTag + "//" + name); // ì„œë²„ì— ì…ì¥ ì •ë³´ë¥¼ ì „ì†¡í•œë‹¤!
         }
       }
 

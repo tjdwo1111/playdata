@@ -199,7 +199,7 @@ class MessageListener extends Thread {
           client.grf.answerBtn.setVisible(false);
           client.grf.skipBtn.setVisible(false);
           client.grf.ranImg.setIcon(null);
-          client.grf.count = 0;
+          client.grf.count = 1;
         }
         /* 게임 끝 */
       }
@@ -213,8 +213,8 @@ class MessageListener extends Thread {
   void loginCheck(String _m) {
     if (_m.equals("OKAY")) {
       System.out.println("[Client] 로그인 성공 : 대기방 열럼 : 로그인 인터페이스 종료");
-      client.wrf.setVisible(true);
       client.lf.dispose();
+      client.wrf.setVisible(true);
     }
   }
 

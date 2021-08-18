@@ -1,9 +1,16 @@
 package application;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import application.LoginFrame.ButtonListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URL;
 
 public class GameRoomFrame extends JFrame {
   /* TAG */
@@ -19,79 +26,103 @@ public class GameRoomFrame extends JFrame {
 
 
   /* Label */
-  JLabel userListL = new JLabel("Âü°¡ÀÚ ¸ñ·Ï");
+  JLabel userListL = new JLabel("ì°¸ê°€ì ëª©ë¡");
   JLabel ranImg = new JLabel();
   JLabel ranAnswer = new JLabel();
 
   /* Button */
-  JButton startBtn = new JButton("°ÔÀÓ½ÃÀÛ");
-  JButton skipBtn = new JButton("½ºÅµ");
-  JButton exitBtn = new JButton("³ª°¡±â");
-  JButton sendChatBtn = new JButton("Àü¼Û");
-  JButton answerBtn = new JButton("Á¤´ä");
+  JButton startBtn = new JButton("ê²Œì„ì‹œì‘");
+  JButton skipBtn = new JButton("ìŠ¤í‚µ");
+  JButton exitBtn = new JButton("ë‚˜ê°€ê¸°");
+  JButton sendChatBtn = new JButton("ì „ì†¡");
+  JButton answerBtn = new JButton("ì •ë‹µ");
+  JButton bgmBtn = new JButton("Play Music");
 
   /* List */
   JList<String> userList = new JList<String>();
 
-  /* TextField + TextArea(Ã¤ÆÃ±¸Á¶) */
+  /* TextField + TextArea(ì±„íŒ…êµ¬ì¡°) */
   JTextArea output = new JTextArea();
   JTextField chatField = new JTextField();
-  JScrollPane scroll = new JScrollPane(output);
+  JScrollPane scroll = new JScrollPane(output, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
   boolean host = false;
   final int answers = 15;
-  int count = 0;
+  int count = 1;
   int myCount = 0;
 
   GameClient c = null;
-  String answer = ""; // Á¤´ä
+  String answer = ""; // ì •ë‹µ
+  Clip clip = null; // ìŒì•…í´ë¦½
 
-  final String gameStart = "START"; // °ÔÀÓ½ÃÀÛ
-  final String gameEnd = "END"; // °ÔÀÓ ³¡
-  final String gameSkip = "SKIP"; // °ÔÀÓ ½ºÅµ
-  final String gameAnswer = "ANSWER"; // Á¤´ä¸ÂÃã
-  final String rexitTag = "REXIT"; // °ÔÀÓ¹æ ÅğÀå
+  final String gameStart = "START"; // ê²Œì„ì‹œì‘
+  final String gameEnd = "END"; // ê²Œì„ ë
+  final String gameSkip = "SKIP"; // ê²Œì„ ìŠ¤í‚µ
+  final String gameAnswer = "ANSWER"; // ì •ë‹µë§ì¶¤
+  final String rexitTag = "REXIT"; // ê²Œì„ë°© í‡´ì¥
 
   public GameRoomFrame(GameClient _c) {
     c = _c;
 
-    /* List Å©±â ÀÛ¾÷ */
+    /* bgm ê´€ë ¨ ì‘ì—… */
+    try {
+      URL file = new URL("https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav");
+      AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+      clip = AudioSystem.getClip();
+      clip.open(ais);
+    } catch (LineUnavailableException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (UnsupportedAudioFileException e) {
+      e.printStackTrace();
+    }
+
+
+    /* List í¬ê¸° ì‘ì—… */
     userList.setPreferredSize(new Dimension(140, 50));
 
-    /* Label Å©±â ÀÛ¾÷ */
+    /* Label í¬ê¸° ì‘ì—… */
+    userListL.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     userListL.setPreferredSize(new Dimension(80, 20));
-    userListL.setHorizontalAlignment(JLabel.LEFT);
-    ranImg.setPreferredSize(new Dimension(500, 500));
+    userListL.setHorizontalAlignment(SwingConstants.CENTER);
+    ranImg.setPreferredSize(new Dimension(800, 600));
     ranImg.setHorizontalAlignment(JLabel.CENTER);
-    ranAnswer.setPreferredSize(new Dimension(50, 50));
-    ranAnswer.setHorizontalAlignment(JLabel.RIGHT);
+    ranAnswer.setVisible(false);
 
-    /* Button Å©±â ÀÛ¾÷ */
+
+    /* Button í¬ê¸° ì‘ì—… */
+    startBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     startBtn.setPreferredSize(new Dimension(90, 50));
+    answerBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     answerBtn.setPreferredSize(new Dimension(90, 50));
     answerBtn.setVisible(false);
+    skipBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     skipBtn.setVisible(false);
     skipBtn.setPreferredSize(new Dimension(235, 30));
+    exitBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
     exitBtn.setPreferredSize(new Dimension(235, 30));
-    sendChatBtn.setPreferredSize(new Dimension(40, 30));
-    sendChatBtn.setHorizontalAlignment(JLabel.RIGHT);
+    sendChatBtn.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 12));
+    sendChatBtn.setPreferredSize(new Dimension(70, 40));
+    bgmBtn.setPreferredSize(new Dimension(100, 100));
 
 
+    scroll.setPreferredSize(new Dimension(200,300));
 
-    /* TextField Å©±â ÀÛ¾÷ */
+    /* TextField í¬ê¸° ì‘ì—… */
     chatField.setPreferredSize(new Dimension(200, 20));
 
-    /* Panel Ãß°¡ ÀÛ¾÷ */
-    setContentPane(basePanel); // panelÀ» ±âº» ÄÁÅ×ÀÌ³Ê·Î ¼³Á¤
+    /* Panel ì¶”ê°€ ì‘ì—… */
+    setContentPane(basePanel); // panelì„ ê¸°ë³¸ ì»¨í…Œì´ë„ˆë¡œ ì„¤ì •
 
-    centerPanel.setPreferredSize(new Dimension(625, 652));
+    centerPanel.setPreferredSize(new Dimension(625, 200));
     centerPanel.setLayout(new FlowLayout());
 
-    eastPanel.setPreferredSize(new Dimension(250, 652));
+    eastPanel.setPreferredSize(new Dimension(250, 400));
     eastPanel.setLayout(new FlowLayout());
 
-    eastChatPanel.setPreferredSize(new Dimension(250, 300));
-    eastChatPanel.setLayout(new FlowLayout());
 
     centerPanel.setBackground(new Color(206, 167, 61));
 
@@ -103,7 +134,7 @@ public class GameRoomFrame extends JFrame {
     centerImgPanel.add(ranImg);
 
     output.setEditable(false);
-
+    
 
     eastPanel.add(userListL);
     eastPanel.add(userList);
@@ -111,103 +142,107 @@ public class GameRoomFrame extends JFrame {
     eastPanel.add(answerBtn);
     eastPanel.add(skipBtn);
     eastPanel.add(exitBtn);
-
-    eastPanel.add(eastChatPanel, new FlowLayout());
-    // eastChatPanel.add(output);
-    eastChatPanel.add(scroll);
-    eastChatPanel.add(chatField);
-    eastChatPanel.add(sendChatBtn);
-    eastChatPanel.add(ranAnswer);
+//    eastPanel.add(scroll);
+    eastPanel.add(scroll);
+    eastPanel.add(chatField);
+    eastPanel.add(sendChatBtn);
+    eastPanel.add(bgmBtn);
 
 
-    /* Button ÀÌº¥Æ® ¸®½º³Ê Ãß°¡ */
+    /* Button ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€ */
     ButtonListener bl = new ButtonListener();
     skipBtn.addActionListener(bl);
     startBtn.addActionListener(bl);
     exitBtn.addActionListener(bl);
     sendChatBtn.addActionListener(bl);
     answerBtn.addActionListener(bl);
+    bgmBtn.addActionListener(bl);
 
-    setSize(885, 652);
+    setSize(1112, 674);
     setResizable(false);
     setLocationRelativeTo(null);
   }
 
-  /* Button ÀÌº¥Æ® ¸®½º³Ê */
+  /* Button ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ */
   class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       JButton b = (JButton) e.getSource();
 
-      /* °ÔÀÓ½ÃÀÛ ¹öÆ° ÀÌº¥Æ® */
-      if (b.getText().equals("°ÔÀÓ½ÃÀÛ")) {
+      /* ê²Œì„ì‹œì‘ ë²„íŠ¼ ì´ë²¤íŠ¸ */
+      if (b.getText().equals("ê²Œì„ì‹œì‘")) {
         if (host == true) {
-          System.out.println("[Client] °ÔÀÓ ½ÃÀÛ! ");
+          System.out.println("[Client] ê²Œì„ ì‹œì‘! ");
           c.sendMsg(gameStart + "//");
 
         } else if (host == false) {
-          JOptionPane.showMessageDialog(null, "HOST¸¸ ±ÇÇÑÀÌ ÀÖ½À´Ï´Ù.", "±ÇÇÑÀÌ ¾ø½À´Ï´Ù.",
+          JOptionPane.showMessageDialog(null, "HOSTë§Œ ê¶Œí•œì´ ìˆìŠµë‹ˆë‹¤.", "ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤.",
               JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] °ÔÀÓ½ÃÀÛ ½ÇÆĞ! : È£½ºÆ® ±ÇÇÑ ¾øÀ½");
+          System.out.println("[Client] ê²Œì„ì‹œì‘ ì‹¤íŒ¨! : í˜¸ìŠ¤íŠ¸ ê¶Œí•œ ì—†ìŒ");
         }
 
       }
 
-      /* ½ºÅµÇÏ±â ¹öÆ° ÀÌº¥Æ® */
-      else if (b.getText().equals("½ºÅµ")) {
+      /* ìŠ¤í‚µí•˜ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("ìŠ¤í‚µ")) {
         if (host == true) {
-          System.out.println("[Client] °ÔÀÓ ½ºÅµ!");
+          System.out.println("[Client] ê²Œì„ ìŠ¤í‚µ!");
           c.sendMsg(gameSkip + "//");
-          c.sendMsg(chatTag + "//" + "³²Àº ¹®Á¦´Â" + (answers - count) + "°³ÀÔ´Ï´Ù!.");
+          c.sendMsg(chatTag + "//" + "ë‚¨ì€ ë¬¸ì œëŠ”" + (answers - count) + "ê°œì…ë‹ˆë‹¤!.");
           if (answers - count == 0) {
             c.sendMsg(gameEnd + "//");
-            c.sendMsg(chatTag + "//" + answers + "°³ÀÇ ¹®Á¦°¡ ³¡³ª °ÔÀÓ Á¾·áµË´Ï´Ù.");
+            c.sendMsg(chatTag + "//" + answers + "ê°œì˜ ë¬¸ì œê°€ ëë‚˜ ê²Œì„ ì¢…ë£Œë©ë‹ˆë‹¤.");
           }
         } else if (host == false) {
-          JOptionPane.showMessageDialog(null, "HOST¸¸ ±ÇÇÑÀÌ ÀÖ½À´Ï´Ù.", "±ÇÇÑÀÌ ¾ø½À´Ï´Ù.",
+          JOptionPane.showMessageDialog(null, "HOSTë§Œ ê¶Œí•œì´ ìˆìŠµë‹ˆë‹¤.", "ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤.",
               JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] ½ºÅµ ½ÇÆĞ! : È£½ºÆ® ±ÇÇÑ ¾øÀ½");
+          System.out.println("[Client] ìŠ¤í‚µ ì‹¤íŒ¨! : í˜¸ìŠ¤íŠ¸ ê¶Œí•œ ì—†ìŒ");
         }
       }
 
-      /* ¹æ ³ª°¡±â ÀÌº¥Æ® */
-      else if (b.getText().equals("³ª°¡±â")) {
+      /* ë°© ë‚˜ê°€ê¸° ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("ë‚˜ê°€ê¸°")) {
         c.sendMsg(rexitTag + "//");
       }
 
-      /* Àü¼Û ¹öÆ° ÀÌº¥Æ® */
-      else if (b.getText().equals("Àü¼Û")) {
+      /* ì „ì†¡ ë²„íŠ¼ ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("ì „ì†¡")) {
         String chatMsg = chatField.getText();
 
-        if (chatMsg.equals("")) { // Ã¤ÆÃ³»¿ë ÀÔ·Â ¾øÀ»¶§
-          System.out.println("[Client] Ã¤ÆÃ Àü¼Û ½ÇÆĞ!!! : ³»¿ëÀ» ¹ÌÀÔ·Â ");
-        } else {// Ã¤ÆÃ³»¿ë ÀÔ·Â ÇßÀ» ¶§
+        if (chatMsg.equals("")) { // ì±„íŒ…ë‚´ìš© ì…ë ¥ ì—†ì„ë•Œ
+          System.out.println("[Client] ì±„íŒ… ì „ì†¡ ì‹¤íŒ¨!!! : ë‚´ìš©ì„ ë¯¸ì…ë ¥ ");
+        } else {// ì±„íŒ…ë‚´ìš© ì…ë ¥ í–ˆì„ ë•Œ
           chatField.setText("");
-          c.sendMsg(chatTag + "//" + chatMsg); // ¼­¹ö¿¡ Ã¤ÆÃ Á¤º¸¸¦ Àü¼ÛÇÑ´Ù!
+          c.sendMsg(chatTag + "//" + chatMsg); // ì„œë²„ì— ì±„íŒ… ì •ë³´ë¥¼ ì „ì†¡í•œë‹¤!
         }
       }
 
-      /* Á¤´ä ¹öÆ° ÀÌº¥Æ® */
-      else if (b.getText().equals("Á¤´ä")) {
+      /* ì •ë‹µ ë²„íŠ¼ ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("ì •ë‹µ")) {
         answer =
-            JOptionPane.showInputDialog(null, "Á¤´äÀ» ÀÔ·ÂÇÏ¼¼¿ä !", "Á¤´ä", JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showInputDialog(null, "ì •ë‹µì„ ì…ë ¥í•˜ì„¸ìš” !", "ì •ë‹µ", JOptionPane.QUESTION_MESSAGE);
         if (answer != "" && answer.equals(ranAnswer.getText())) {
           c.sendMsg(gameAnswer + "//");
-          c.sendMsg(chatTag + "//" + "³²Àº ¹®Á¦´Â" + (answers - count) + "°³ÀÔ´Ï´Ù!.");
-          System.out.println("[Client] Á¤´ä : Á¤´äÀ» ÀÔ·ÂÇß½À´Ï´Ù.");
+          c.sendMsg(chatTag + "//" + "ë‚¨ì€ ë¬¸ì œëŠ”" + (answers - count) + "ê°œì…ë‹ˆë‹¤!.");
+          System.out.println("[Client] ì •ë‹µ : ì •ë‹µì„ ì…ë ¥í–ˆìŠµë‹ˆë‹¤.");
 
           if (answers - count == 0) {
             c.sendMsg(gameEnd + "//");
-            c.sendMsg(chatTag + "//" + answers + "°³ÀÇ ¹®Á¦°¡ ³¡³ª °ÔÀÓ Á¾·áµË´Ï´Ù.");
+            c.sendMsg(chatTag + "//" + answers + "ê°œì˜ ë¬¸ì œê°€ ëë‚˜ ê²Œì„ ì¢…ë£Œë©ë‹ˆë‹¤.");
           }
 
         } else if (answer == "") {
-          JOptionPane.showMessageDialog(null, "Á¤´äÀ» ÀÔ·ÂÇÏ¼¼¿ä.", "¿¡·¯", JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] Á¤´ä ÀÔ·Â ¿À·ù : Á¤´äÀ» ÀÔ·ÂÇÏÁö ¾ÊÀ½.");
+          JOptionPane.showMessageDialog(null, "ì •ë‹µì„ ì…ë ¥í•˜ì„¸ìš”.", "ì—ëŸ¬", JOptionPane.ERROR_MESSAGE);
+          System.out.println("[Client] ì •ë‹µ ì…ë ¥ ì˜¤ë¥˜ : ì •ë‹µì„ ì…ë ¥í•˜ì§€ ì•ŠìŒ.");
         } else if (answer != "" && !answer.equals(ranAnswer.getText())) {
-          JOptionPane.showMessageDialog(null, "¿À´äÀÔ´Ï´Ù.", "¿À´ä", JOptionPane.ERROR_MESSAGE);
-          System.out.println("[Client] ¿À´ä : ÀÔ·Â°ªÀÌ ´Ù¸¨´Ï´Ù.");
+          JOptionPane.showMessageDialog(null, "ì˜¤ë‹µì…ë‹ˆë‹¤.", "ì˜¤ë‹µ", JOptionPane.ERROR_MESSAGE);
+          System.out.println("[Client] ì˜¤ë‹µ : ì…ë ¥ê°’ì´ ë‹¤ë¦…ë‹ˆë‹¤.");
         }
+      }
+      /* ìŒì•…ì¬ìƒ ì´ë²¤íŠ¸ */
+      else if (b.getText().equals("Play Music")) {
+        clip.setFramePosition(0);
+        clip.start();
       }
     }
   }
