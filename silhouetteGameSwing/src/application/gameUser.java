@@ -3,47 +3,46 @@ package application;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.ImageIcon;
+import javafx.scene.image.Image;
 
-// ì„œë²„ì— ì ‘ì†í•œ ìœ ì €ì™€ì˜ ë©”ì„¸ì§€ ì†¡ìˆ˜ì‹ ì„ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
-// ìŠ¤ë ˆë“œë¥¼ ìƒì†ë°›ì•„ ì—°ê²° ìš”ì²­ì´ ë“¤ì–´ì™”ì„ ë•Œë„ ë…ë¦½ì ìœ¼ë¡œ ë™ì‘í•  ìˆ˜ ìˆë„ë¡ í•œë‹¤.
+// ¼­¹ö¿¡ Á¢¼ÓÇÑ À¯Àú¿ÍÀÇ ¸Ş¼¼Áö ¼Û¼ö½ÅÀ» °ü¸®ÇÏ´Â Å¬·¡½º
+// ½º·¹µå¸¦ »ó¼Ó¹Ş¾Æ ¿¬°á ¿äÃ»ÀÌ µé¾î¿ÔÀ» ¶§µµ µ¶¸³ÀûÀ¸·Î µ¿ÀÛÇÒ ¼ö ÀÖµµ·Ï ÇÑ´Ù.
 public class gameUser extends Thread {
 
   gameServer server;
   Socket socket;
-  Vector<gameUser> auser; // ì—°ê²°ëœ ëª¨ë“  í´ë¼ì´ì–¸íŠ¸
-  Vector<gameUser> wuser; // ëŒ€ê¸°ì‹¤ì— ìˆëŠ” ëª¨ë“  í´ë¼ì´ì–¸íŠ¸
-  Vector<gameRoom> room; // ìƒì„±ëœ ëª¨ë“  Room
+  Vector<gameUser> auser; // ¿¬°áµÈ ¸ğµç Å¬¶óÀÌ¾ğÆ®
+  Vector<gameUser> wuser; // ´ë±â½Ç¿¡ ÀÖ´Â ¸ğµç Å¬¶óÀÌ¾ğÆ®
+  Vector<gameRoom> room; // »ı¼ºµÈ ¸ğµç Room
 
-  // ë©”ì„¸ì§€ ì†¡ìˆ˜ì‹ ì„ ìœ„í•œ í•„ë“œ
+  // ¸Ş¼¼Áö ¼Û¼ö½ÅÀ» À§ÇÑ ÇÊµå
   OutputStream os;
   DataOutputStream dos;
   InputStream is;
   DataInputStream dis;
 
-  String msg; // ìˆ˜ì‹  ë©”ì„¸ì§€ë¥¼ ì €ì¥í•  í•„ë“œ.
-  String name; // í´ë¼ì´ì–¸íŠ¸ì˜ ë‹‰ë„¤ì„ì„ ì €ì¥í•  í•„ë“œ.
+  String msg; // ¼ö½Å ¸Ş¼¼Áö¸¦ ÀúÀåÇÒ ÇÊµå.
+  String name; // Å¬¶óÀÌ¾ğÆ®ÀÇ ´Ğ³×ÀÓÀ» ÀúÀåÇÒ ÇÊµå.
+  List<String> Images; // ·£´ı ÀÌ¹ÌÁö¸¦ °¡Á®¿À´Â ÇÊµå
 
+  gameRoom myRoom; // ÀÔÀåÇÑ ¹æÀÇ °´Ã¼¸¦ ÀúÀåÇÒ ÇÊµå
 
-  gameRoom myRoom; // ì…ì¥í•œ ë°©ì˜ ê°ì²´ë¥¼ ì €ì¥í•  í•„ë“œ
-
-  // ë©”ì‹œì§€ë¥¼ êµ¬ë¶„í•˜ê¸° ìœ„í•œ íƒœê·¸
-  final String loginTag = "LOGIN"; // ë¡œê·¸ì¸
-  final String croomTag = "CROOM"; // ë°© ìƒì„±
-  final String vroomTag = "VROOM"; // ë°© ëª©ë¡
-  final String uroomTag = "UROOM"; // ë°© ìœ ì €
-  final String eroomTag = "EROOM"; // ë°© ì…ì¥
-  final String cuserTag = "CUSER"; // ì ‘ì† ìœ ì €
-  final String pexitTag = "PEXIT"; // í”„ë¡œê·¸ë¨ ì¢…ë£Œ
-  final String rexitTag = "REXIT"; // ë°© í‡´ì¥
-  final String gameStart = "START"; // ê²Œì„ì‹œì‘
-  final String gameEnd = "END"; // ê²Œì„ì¢…ë£Œ
-
+  // ¸Ş½ÃÁö¸¦ ±¸ºĞÇÏ±â À§ÇÑ ÅÂ±×
+  final String loginTag = "LOGIN"; // ·Î±×ÀÎ
+  final String croomTag = "CROOM"; // ¹æ »ı¼º
+  final String vroomTag = "VROOM"; // ¹æ ¸ñ·Ï
+  final String uroomTag = "UROOM"; // ¹æ À¯Àú
+  final String eroomTag = "EROOM"; // ¹æ ÀÔÀå
+  final String cuserTag = "CUSER"; // Á¢¼Ó À¯Àú
+  final String pexitTag = "PEXIT"; // ÇÁ·Î±×·¥ Á¾·á
+  final String rexitTag = "REXIT"; // ¹æ ÅğÀå
+  final String gameStart = "START"; // °ÔÀÓ½ÃÀÛ
+  final String gameAnswer = "ANSWER"; // Á¤´ä¸ÂÃâ½Ã
+  final String gameEnd = "END"; // °ÔÀÓÁ¾·á
+  final String gameSkip = "SKIP"; // °ÔÀÓ ½ºÅµ
   final String chatTag = "CHAT";
-  final String chatMsgTag ="CHATM";
-
-  final String gameSkip = "SKIP"; // ê²Œì„ ìŠ¤í‚µ
-
-
+  final String chatMsgTag = "CHATM";
 
 
   public gameUser(Socket soc, gameServer sev) {
@@ -57,7 +56,7 @@ public class gameUser extends Thread {
 
   @Override
   public void run() {
-    System.out.println("[Server] í´ë¼ì´ì–¸íŠ¸ ì ‘ì† > " + this.socket.toString());
+    System.out.println("[Server] Å¬¶óÀÌ¾ğÆ® Á¢¼Ó > " + this.socket.toString());
 
     try {
       os = this.socket.getOutputStream();
@@ -66,17 +65,17 @@ public class gameUser extends Thread {
       dis = new DataInputStream(is);
 
       while (true) {
-        msg = dis.readUTF(); // ë©”ì‹œì§€ ìˆ˜ì‹ ì„ ìƒì‹œ ëŒ€ê¸°ì‹œí‚¨ë‹¤.
+        msg = dis.readUTF(); // ¸Ş½ÃÁö ¼ö½ÅÀ» »ó½Ã ´ë±â½ÃÅ²´Ù.
 
-        String[] m = msg.split("//"); // msgë¥¼ "//"ë¡œ ë‚˜ëˆ„ì–´ m[]ë°°ì—´ì— ì°¨ë¡€ë¡œ ì§‘ì–´ë„£ëŠ”ë‹¤.
-        // ìˆ˜ì‹  ë°›ì€ ë¬¸ìì—´ë“¤ì˜ ì²« ë²ˆì§¸ ë°°ì—´(m[0])ì€ ëª¨ë‘ íƒœê·¸ ë¬¸ì. ê° ê¸°ëŠ¥ì„ ë¶„ë¦¬í•œë‹¤.
+        String[] m = msg.split("//"); // msg¸¦ "//"·Î ³ª´©¾î m[]¹è¿­¿¡ Â÷·Ê·Î Áı¾î³Ö´Â´Ù.
+        // ¼ö½Å ¹ŞÀº ¹®ÀÚ¿­µéÀÇ Ã¹ ¹øÂ° ¹è¿­(m[0])Àº ¸ğµÎ ÅÂ±× ¹®ÀÚ. °¢ ±â´ÉÀ» ºĞ¸®ÇÑ´Ù.
 
-        /* ë¡œê·¸ì¸ */
+        /* ·Î±×ÀÎ */
         if (m[0].equals(loginTag)) {
           String mm = m[1];
 
           if (!mm.equals("null")) {
-            name = mm; // ë¡œê·¸ì¸í•œ ì‚¬ìš©ìì˜ ë‹‰ë„¤ì„ì„ í•„ë“œì— ì €ì¥í•œë‹¤.
+            name = mm; // ·Î±×ÀÎÇÑ »ç¿ëÀÚÀÇ ´Ğ³×ÀÓÀ» ÇÊµå¿¡ ÀúÀåÇÑ´Ù.
             auser.add(this);
             wuser.add(this);
 
@@ -84,91 +83,135 @@ public class gameUser extends Thread {
 
             sendWait(connectedUser());
 
-            if (room.size() > 0) { // ìƒì„±ëœ ë°©ì˜ ê°¯ìˆ˜ê°€ 0ì´ë©´
-              sendWait(roomInfo()); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì— ë°© ëª©ë¡ì„ ì „ì†¡í•œë‹¤.
+            if (room.size() > 0) { // »ı¼ºµÈ ¹æÀÇ °¹¼ö°¡ 0ÀÌ¸é
+              sendWait(roomInfo()); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ ¹æ ¸ñ·ÏÀ» Àü¼ÛÇÑ´Ù.
             }
           }
         }
-        /* ë¡œê·¸ì¸ */
+        /* ·Î±×ÀÎ */
 
-        /* ë°©ìƒì„± */
+        /* ¹æ»ı¼º */
         else if (m[0].equals(croomTag)) {
-          myRoom = new gameRoom(); // ìƒˆë¡œìš´ Room ê°ì²´ ìƒì„± í›„ myRoomì— ì´ˆê¸°í™”
-          myRoom.title = m[1]; // ë°© ì œëª©ì„ m[1]ë¡œ ì„¤ì •.
-          myRoom.count++; // ë°©ì˜ ì¸ì›ìˆ˜Âf í•˜ë‚˜ ì¶”ê°€
+          myRoom = new gameRoom(); // »õ·Î¿î Room °´Ã¼ »ı¼º ÈÄ myRoom¿¡ ÃÊ±âÈ­
+          myRoom.title = m[1]; // ¹æ Á¦¸ñÀ» m[1]·Î ¼³Á¤.
+          myRoom.count++; // ¹æÀÇ ÀÎ¿ø¼öf ÇÏ³ª Ãß°¡
 
-          room.add(myRoom); // room ë°°ì—´ì— myRoomì„ ì¶”ê°€.
+          room.add(myRoom); // room ¹è¿­¿¡ myRoomÀ» Ãß°¡.
 
-          myRoom.gUser.add(this); // myRoomì˜ ì ‘ì† ì¸ì›ì— í´ë¼ì´ì–¸íŠ¸ ì¶”ê°€
-          wuser.remove(this); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì—ì„œ í´ë¼ì´ì–¸íŠ¸ë¥¼ ì§€ìš´ë‹¤
+          myRoom.gUser.add(this); // myRoomÀÇ Á¢¼Ó ÀÎ¿ø¿¡ Å¬¶óÀÌ¾ğÆ® Ãß°¡
+          wuser.remove(this); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡¼­ Å¬¶óÀÌ¾ğÆ®¸¦ Áö¿î´Ù
 
-          dos.writeUTF(croomTag + "//OKAY");
-          System.out.println("[Server] " + name + " : ë°©  '" + m[1] + "' ìƒì„±");
+          dos.writeUTF(croomTag + "//OKAY" + "//");
+          System.out.println("[Server] " + name + " : ¹æ  '" + m[1] + "' »ı¼º");
 
-          sendWait(roomInfo()); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì— ë°© ëª©ë¡ì„ ì „ì†¡í•œë‹¤.
-          sendRoom(roomUser()); // ë°©ì— ì…ì¥í•œ ì¸ì›ì— ë°© ì¸ì› ëª©ë¡ì„ ì „ì†¡í•œë‹¤.
+          sendWait(roomInfo()); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ ¹æ ¸ñ·ÏÀ» Àü¼ÛÇÑ´Ù.
+          sendRoom(roomUser()); // ¹æ¿¡ ÀÔÀåÇÑ ÀÎ¿ø¿¡ ¹æ ÀÎ¿ø ¸ñ·ÏÀ» Àü¼ÛÇÑ´Ù.
         }
-        /* ë°© ìƒì„± */
+        /* ¹æ »ı¼º */
 
-        /* ë°©ì…ì¥ */
+        /* ¹æÀÔÀå */
         else if (m[0].equals(eroomTag)) {
-          for (int makedRoom = 0; makedRoom < room.size(); makedRoom++) { // ìƒì„±ëœ ë°©ì˜ ê°¯ìˆ˜
+          for (int makedRoom = 0; makedRoom < room.size(); makedRoom++) { // »ı¼ºµÈ ¹æÀÇ °¹¼ö
             gameRoom r = room.get(makedRoom);
-            if (r.title.equals(m[1])) { // ë°© ì œëª©ì´ ê°™ê³ .
+            if (r.title.equals(m[1])) { // ¹æ Á¦¸ñÀÌ °°°í.
 
-              if (r.count < 6) { // ë°© ì¸ì›ìˆ˜ê°€ 6ëª…ë³´ë‹¤ ì ì„ ë•Œ ì…ì¥ ì„±ê³µ
-                myRoom = room.get(makedRoom); // myRoomì— ë‘ ì¡°ê±´ì´ ë§ëŠ” në²ˆì§¸ roomì„ ì´ˆê¸°í™”
-                myRoom.count++; // ë°©ì˜ ì¸ì›ìˆ˜ë¥¼ í•˜ë‚˜ ì¶”ê°€í•œë‹¤.
-                wuser.remove(this); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì—ì„œ í´ë¼ì´ì–¸íŠ¸ë¥¼ ì‚­ì œí•œë‹¤.
-                myRoom.gUser.add(this); // myRoomì˜ ì ‘ì† ì¸ì›ì— í´ë¼ì´ì–¸íŠ¸ë¥¼ ì¶”ê°€í•œë‹¤.
+              if (r.count < 6) { // ¹æ ÀÎ¿ø¼ö°¡ 6¸íº¸´Ù ÀûÀ» ¶§ ÀÔÀå ¼º°ø
+                myRoom = room.get(makedRoom); // myRoom¿¡ µÎ Á¶°ÇÀÌ ¸Â´Â n¹øÂ° roomÀ» ÃÊ±âÈ­
+                myRoom.count++; // ¹æÀÇ ÀÎ¿ø¼ö¸¦ ÇÏ³ª Ãß°¡ÇÑ´Ù.
+                wuser.remove(this); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡¼­ Å¬¶óÀÌ¾ğÆ®¸¦ »èÁ¦ÇÑ´Ù.
+                myRoom.gUser.add(this); // myRoomÀÇ Á¢¼Ó ÀÎ¿ø¿¡ Å¬¶óÀÌ¾ğÆ®¸¦ Ãß°¡ÇÑ´Ù.
 
-                sendWait(roomInfo()); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì— ë°© ëª©ë¡ì„ ì „ì†¡
-                sendRoom(roomUser()); // ë°©ì— ì…ì¥í•œ ì¸ì›ì— ë°© ì¸ì› ëª©ë¡ì„ ì „ì†¡.
+                sendWait(roomInfo()); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ ¹æ ¸ñ·ÏÀ» Àü¼Û
+                sendRoom(roomUser()); // ¹æ¿¡ ÀÔÀåÇÑ ÀÎ¿ø¿¡ ¹æ ÀÎ¿ø ¸ñ·ÏÀ» Àü¼Û.
 
                 dos.writeUTF(eroomTag + "//OKAY");
-                System.out.println("[Server] " + name + " : ë°© '" + m[1] + "' ì…ì¥");
+                System.out.println("[Server] " + name + " : ¹æ '" + m[1] + "' ÀÔÀå");
               } else {
                 dos.writeUTF(eroomTag + "//FAIL");
-                System.out.println("[Server] ì¸ì› ì´ˆê³¼ ì…ì¥ ë¶ˆê°€ëŠ¥!");
+                System.out.println("[Server] ÀÎ¿ø ÃÊ°ú ÀÔÀå ºÒ°¡´É!");
               }
-            } else { // ê°™ì€ ë°© ì œëª©ì´ ì—†ìœ¼ë‹ˆ ì…ì¥ ì‹¤íŒ¨.
+            } else { // °°Àº ¹æ Á¦¸ñÀÌ ¾øÀ¸´Ï ÀÔÀå ½ÇÆĞ.
               dos.writeUTF(eroomTag + "//FAIL");
-              System.out.println("[Server] " + name + " : ë°© '" + m[1] + "' ì…ì¥ ì˜¤ë¥˜");
+              System.out.println("[Server] " + name + " : ¹æ '" + m[1] + "' ÀÔÀå ¿À·ù");
             }
           }
         }
-        /* ë°©ì…ì¥ */
+        /* ¹æÀÔÀå */
 
-        /* í”„ë¡œê·¸ë¨ ì¢…ë£Œ */
+        /* ÇÁ·Î±×·¥ Á¾·á */
         else if (m[0].equals(pexitTag)) {
-          auser.remove(this); // ì „ì²´ ì ‘ì† ì¸ì›ì—ì„œ í´ë¼ì´ì–¸íŠ¸ ì‚­ì œ
-          wuser.remove(this); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì—ì„œ í´ë¼ì´ì–¸íŠ¸ ì‚­ì œ
+          auser.remove(this); // ÀüÃ¼ Á¢¼Ó ÀÎ¿ø¿¡¼­ Å¬¶óÀÌ¾ğÆ® »èÁ¦
+          wuser.remove(this); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡¼­ Å¬¶óÀÌ¾ğÆ® »èÁ¦
 
-          sendWait(connectedUser()); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì— ì „ì²´ ì ‘ì†ì¸ì›ì„ ì „ì†¡
+          sendWait(connectedUser()); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ ÀüÃ¼ Á¢¼ÓÀÎ¿øÀ» Àü¼Û
         }
-        /* í”„ë¡œê·¸ë¨ ì¢…ë£Œ */
+        /* ÇÁ·Î±×·¥ Á¾·á */
 
-        /* ë°© í‡´ì¥ */
+        /* ¹æ ÅğÀå */
         else if (m[0].equals(rexitTag)) {
-          myRoom.gUser.remove(this); // myRoomì˜ ì ‘ì† ì¸ì›ì—ì„œ í´ë¼ì´ì–¸íŠ¸ ì‚­ì œ
-          myRoom.count--; // myRoomì˜ ì¸ì›ìˆ˜ í•˜ë‚˜ ì‚­ì œ
-          wuser.add(this); // ëŒ€ê¸°ì‹¤ ì ‘ì† ì¸ì›ì— í´ë¼ì´ì–¸íŠ¸ ì¶”ê°€
+          myRoom.gUser.remove(this); // myRoomÀÇ Á¢¼Ó ÀÎ¿ø¿¡¼­ Å¬¶óÀÌ¾ğÆ® »èÁ¦
+          myRoom.count--; // myRoomÀÇ ÀÎ¿ø¼ö ÇÏ³ª »èÁ¦
+          wuser.add(this); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ Å¬¶óÀÌ¾ğÆ® Ãß°¡
 
-          System.out.println("[Server] " + name + " : ë°© '" + myRoom.title + "' í‡´ì¥");
+          System.out.println("[Server] " + name + " : ¹æ '" + myRoom.title + "' ÅğÀå");
 
-          if (myRoom.count == 0) { // myRoomì˜ ì¸ì›ìˆ˜ê°€ 0ì´ë©´ myRoomì„ room ë°°ì—´ì—ì„œ ì‚­ì œ.
+          dos.writeUTF(rexitTag + "//");
+
+
+          if (myRoom.count == 0) { // myRoomÀÇ ÀÎ¿ø¼ö°¡ 0ÀÌ¸é myRoomÀ» room ¹è¿­¿¡¼­ »èÁ¦.
             room.remove(myRoom);
           }
 
-          if (room.size() != 0) { // ìƒì„±ëœ Roomì˜ ê°œìˆ˜ê°€ 0ì´ ì•„ë‹ˆë©´ ë°©ì— ì…ì¥í•œ ì¸ì›ì— ë°© ì¸ì› ëª©ë¡ì„ ì „ì†¡
+          if (room.size() != 0) { // »ı¼ºµÈ RoomÀÇ °³¼ö°¡ 0ÀÌ ¾Æ´Ï¸é ¹æ¿¡ ÀÔÀåÇÑ ÀÎ¿ø¿¡ ¹æ ÀÎ¿ø ¸ñ·ÏÀ» Àü¼Û
             sendRoom(roomUser());
           }
-        
-        /*ì±„íŒ…*/
-        }else if(m[0].equals(chatTag)) {
-        	sendRoom(chatMsg(m[1]));// ë©”ì„¸ì§€ë¥¼ ë³´ë‚¸ë‹¤
+
+          sendWait(roomInfo()); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ ¹æ ¸ñ·ÏÀ» Àü¼Û
+          sendWait(connectedUser()); // ´ë±â½Ç Á¢¼Ó ÀÎ¿ø¿¡ ÀüÃ¼ Á¢¼Ó ÀÎ¿øÀ» Àü¼Û
         }
-        /*ì±„íŒ…*/
+        /* ¹æ ÅğÀå */
+
+        /* Ã¤ÆÃ */
+        else if (m[0].equals(chatTag)) {
+          System.out.println("[Server] ¸Ş¼¼Áö ³»¿ë " + m[1]);
+          System.out.println("nameÂïÈ÷´Ï?" + name);
+          sendRoom(chatMsg(m[1]));
+        }
+        /* Ã¤ÆÃ */
+
+        /* °ÔÀÓ ½ÃÀÛ */
+        else if (m[0].equals(gameStart)) {
+          System.out.println("[Server] °ÔÀÓ ½ÃÀÛ!");
+          firstLoadImg(new File("resource"));
+          String image = loadRandomImages();
+          sendRoom(gameStart + "//" + image);
+        }
+        /* °ÔÀÓ ½ÃÀÛ */
+
+        /* °ÔÀÓ ½ºÅµ */
+        else if (m[0].equals(gameSkip)) {
+          System.out.println("[Server] °ÔÀÓ ½ºÅµ!");
+          firstLoadImg(new File("resource"));
+          String image = loadRandomImages();
+          sendRoom(gameSkip + "//" + image);
+        }
+        /* °ÔÀÓ ½ºÅµ */
+
+        /* °ÔÀÓ Á¤´ä */
+        else if (m[0].equals(gameAnswer)) {
+          System.out.println("[Server] °ÔÀÓ Á¤´ä!");
+          firstLoadImg(new File("resource"));
+          String image = loadRandomImages();
+          sendRoom(gameAnswer + "//" + image);
+        }
+        /* °ÔÀÓ Á¤´ä */
+        
+        /* °ÔÀÓ ³¡ */
+        else if (m[0].equals(gameEnd)) {
+          System.out.println("[Server] °ÔÀÓ ³¡");
+          sendRoom(gameEnd + "//");
+        }
+        /* °ÔÀÓ ³¡ */
         
       }
 
@@ -178,7 +221,7 @@ public class gameUser extends Thread {
     }
   }
 
-  /* í˜„ì¬ ì¡´ì¬í•˜ëŠ” ë°©ì˜ ëª©ë¡ì„ ì¡°íšŒ */
+  /* ÇöÀç Á¸ÀçÇÏ´Â ¹æÀÇ ¸ñ·ÏÀ» Á¶È¸ */
   String roomInfo() {
     String msg = vroomTag + "//";
 
@@ -187,9 +230,9 @@ public class gameUser extends Thread {
     }
     return msg;
   }
-  /* í˜„ì¬ ì¡´ì¬í•˜ëŠ” ë°©ì˜ ëª©ë¡ì„ ì¡°íšŒ */
+  /* ÇöÀç Á¸ÀçÇÏ´Â ¹æÀÇ ¸ñ·ÏÀ» Á¶È¸ */
 
-  /* í´ë¼ì´ì–¸íŠ¸ê°€ ì…ì¥í•œ ë°©ì˜ ì¸ì›ì„ ì¡°íšŒ */
+  /* Å¬¶óÀÌ¾ğÆ®°¡ ÀÔÀåÇÑ ¹æÀÇ ÀÎ¿øÀ» Á¶È¸ */
   String roomUser() {
     String msg = uroomTag + "//";
 
@@ -198,16 +241,16 @@ public class gameUser extends Thread {
     }
     return msg;
   }
-  /* í´ë¼ì´ì–¸íŠ¸ê°€ ì…ì¥í•œ ë°©ì˜ ì¸ì›ì„ ì¡°íšŒ */
+  /* Å¬¶óÀÌ¾ğÆ®°¡ ÀÔÀåÇÑ ¹æÀÇ ÀÎ¿øÀ» Á¶È¸ */
 
-  /* ì±„íŒ… ë©”ì„¸ì§€ ë‚´ì˜¹ */
+  /* Ã¤ÆÃÀü¼Û */
   String chatMsg(String chatMsg) {
-	  String msg = chatMsgTag + "//" + chatMsg;
-	  return msg;
+    String msg = chatMsgTag + "//" + name + " : " + chatMsg;
+    return msg;
   }
-  /* ì±„íŒ… ë©”ì„¸ì§€ ë‚´ì˜¹ */
-  
-  /* ì ‘ì†í•œ ëª¨ë“  íšŒì› ëª©ë¡ì„ ì¡°íšŒ */
+  /* Ã¤ÆÃÀü¼Û */
+
+  /* Á¢¼ÓÇÑ ¸ğµç È¸¿ø ¸ñ·ÏÀ» Á¶È¸ */
   String connectedUser() {
     String msg = cuserTag + "//";
     for (int i = 0; i < auser.size(); i++) {
@@ -215,9 +258,9 @@ public class gameUser extends Thread {
     }
     return msg;
   }
-  /* ì ‘ì†í•œ ëª¨ë“  íšŒì› ëª©ë¡ì„ ì¡°íšŒ */
+  /* Á¢¼ÓÇÑ ¸ğµç È¸¿ø ¸ñ·ÏÀ» Á¶È¸ */
 
-  /* ëŒ€ê¸°ì‹¤ì— ìˆëŠ” ëª¨ë“  íšŒì›ì—ê²Œ ë©”ì‹œì§€ ì „ì†¡ */
+  /* ´ë±â½Ç¿¡ ÀÖ´Â ¸ğµç È¸¿ø¿¡°Ô ¸Ş½ÃÁö Àü¼Û */
   void sendWait(String m) {
     for (int i = 0; i < wuser.size(); i++) {
       try {
@@ -227,9 +270,9 @@ public class gameUser extends Thread {
       }
     }
   }
-  /* ëŒ€ê¸°ì‹¤ì— ìˆëŠ” ëª¨ë“  íšŒì›ì—ê²Œ ë©”ì‹œì§€ ì „ì†¡ */
+  /* ´ë±â½Ç¿¡ ÀÖ´Â ¸ğµç È¸¿ø¿¡°Ô ¸Ş½ÃÁö Àü¼Û */
 
-  /* ë°©ì— ì…ì¥í•œ ëª¨ë“  íšŒì›ì—ê²Œ ë©”ì‹œì§€ ì „ì†¡ */
+  /* ¹æ¿¡ ÀÔÀåÇÑ ¸ğµç È¸¿ø¿¡°Ô ¸Ş½ÃÁö Àü¼Û */
   void sendRoom(String m) {
     for (int i = 0; i < myRoom.gUser.size(); i++) {
       try {
@@ -239,5 +282,34 @@ public class gameUser extends Thread {
       }
     }
   }
-  /* ë°©ì— ì…ì¥í•œ ëª¨ë“  íšŒì›ì—ê²Œ ë©”ì‹œì§€ ì „ì†¡ */
+  /* ¹æ¿¡ ÀÔÀåÇÑ ¸ğµç È¸¿ø¿¡°Ô ¸Ş½ÃÁö Àü¼Û */
+
+  /* ·£´ı±×¸² ¸¸µé±â (ÆÄÀÏµé ¹è¿­¿¡ ´ã±â) */
+  // File µğ·ºÅä¸®·Î µé¾î°¡¼­ ·£´ı ÀÌ¹ÌÁö¸¦ Ã£´Â´Ù.
+  void firstLoadImg(final File directroty) {
+    if (Images == null) {
+      Images = new ArrayList<String>();
+    } else {
+      Images.clear();
+    }
+
+    File[] files = directroty.listFiles();
+    for (File f : files) {
+      if (f.isDirectory()) {
+        firstLoadImg(f);
+      } else {
+        Images.add(f.getPath());
+      }
+    }
+  }
+  /* ·£´ı±×¸² ¸¸µé±â (ÆÄÀÏµé ¹è¿­¿¡ ´ã±â) */
+
+  /* ·£´ı±×¸² ¸¸µé±â  (¹è¿­¿¡ ³ÖÀº ÆÄÀÏ ¼¼ÆÃÇÏ±â.) */
+  String loadRandomImages() {
+    int countImages = Images.size();
+    int imageNumber = (int) (Math.random() * countImages);
+    String image = Images.get(imageNumber);
+    return image;
+  }
+  /* ·£´ı±×¸² ¸¸µé±â  (¹è¿­¿¡ ³ÖÀº ÆÄÀÏ ¼¼ÆÃÇÏ±â.) */
 }
