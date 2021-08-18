@@ -1,21 +1,26 @@
 package application;
 
 import javax.swing.*;
-import application.LoginFrame.ButtonListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 // 대기실 기능을 하는 인터페이스!
 public class WaitRoomFrame extends JFrame {
+	BufferedImage img =null;
 
   /* Panel */
+  
   JPanel basePanel = new JPanel(new BorderLayout());
   JPanel centerPanel = new JPanel();
   JPanel eastPanel = new JPanel();
 
   /* Label */
-  JLabel roomListL = new JLabel("================ 게임방 목록 ================");
-  JLabel cuListL = new JLabel("======= 접속 인원 =======");
+  JLabel roomListL = new JLabel("=========== 게임방 목록 ===========");
+  JLabel cuListL = new JLabel("===== 접속 인원 =====");
 
   /* ScrollPane */
   JScrollPane rL_sp;
@@ -29,16 +34,22 @@ public class WaitRoomFrame extends JFrame {
   JButton createRoom = new JButton("방 생성하기");
   JButton enterRoom = new JButton("방 입장하기");
   JButton exitGame = new JButton("게임 종료하기");
-
+  JButton creator = new JButton("만든이");
+  
   String selRoom; // 선택된 방 제목
   String roomName; // 생성할 방 제목
 
+  
   GameClient c = null;
-
+  
   final String croomTag = "CROOM"; // 방 생성 기능 태그
   final String eroomTag = "EROOM"; // 방 입장 기능 태그
   final String pexitTag = "PEXIT"; // 프로그램 종료 기능 태그
-
+  
+  
+  
+  
+  
   WaitRoomFrame(GameClient _c) {
     c = _c;
 
@@ -62,7 +73,8 @@ public class WaitRoomFrame extends JFrame {
     createRoom.setPreferredSize(new Dimension(160, 35));
     enterRoom.setPreferredSize(new Dimension(160, 35));
     exitGame.setPreferredSize(new Dimension(160, 35));
-
+    creator.setPreferredSize(new Dimension(160, 35));
+    
     /* Panel 추가 작업 */
     setContentPane(basePanel); // panel을 기본 컨테이너로 설정
 
@@ -81,6 +93,7 @@ public class WaitRoomFrame extends JFrame {
     eastPanel.add(createRoom);
     eastPanel.add(enterRoom);
     eastPanel.add(exitGame);
+    eastPanel.add(creator);
 
     /* 버튼 이벤트 리스너 추가 */
     ButtonListener b1 = new ButtonListener();
@@ -88,6 +101,7 @@ public class WaitRoomFrame extends JFrame {
     createRoom.addActionListener(b1);
     enterRoom.addActionListener(b1);
     exitGame.addActionListener(b1);
+    creator.addActionListener(b1);
 
     /* 마우스 이벤트 리스너 추가 */
     rList.addMouseListener(new MouseListener() {
@@ -152,6 +166,19 @@ public class WaitRoomFrame extends JFrame {
         c.sendMsg(pexitTag + "//"); // 서버에 프로그램이 종료됐다는 태그를 전송
         System.exit(0);
       }
+      // 만든이 버튼 이벤트
+      if (Desktop.isDesktopSupported()) {
+          Desktop desktop = Desktop.getDesktop();
+          try {
+              URI uri = new URI("https://github.com/tjdwo1111/silhouette-match-game"); //uri연결
+              desktop.browse(uri); // 브라우저창을 띄워줌
+          } catch (IOException ex) {
+              ex.printStackTrace();
+          } catch (URISyntaxException ex) {
+              ex.printStackTrace();
+          }
+          
+          }
     }
   }
 }
